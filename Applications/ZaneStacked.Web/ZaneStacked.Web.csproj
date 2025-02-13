@@ -28,10 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Controls\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Libraries\ZaneStacked.Shared\ZaneStacked.Shared.csproj" />
     </ItemGroup>
 

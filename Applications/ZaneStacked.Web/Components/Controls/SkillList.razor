@@ -1,0 +1,28 @@
+@using ZaneStacked.Shared.DTOs
+@using ZaneStacked.Web.Services
+@inject SkillService SkillService
+
+@if (_skills is null)
+{
+    <p>Loading skills...</p>
+}
+else
+{
+    <ul>
+        @foreach (var skill in _skills)
+        {
+            <li>@skill.Name - @skill.YearsOfExperience years</li>
+        }
+    </ul>
+}
+
+@code {
+
+    private List<SkillDto>? _skills;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _skills = await SkillService.GetSkillsAsync();
+    }
+
+}
