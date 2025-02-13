@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Libraries\ZaneStacked.Api.Persistence.EFCore\ZaneStacked.Api.Persistence.EFCore.csproj" />
+      <ProjectReference Include="..\..\Libraries\ZaneStacked.Shared\ZaneStacked.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -13,10 +13,6 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
-      <AdditionalFiles Include="Components\Layout\NavMenu.razor" />
-      <AdditionalFiles Include="Components\Pages\Counter.razor" />
-      <AdditionalFiles Include="Components\Pages\Home.razor" />
-      <AdditionalFiles Include="Components\Pages\Weather.razor" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,7 +29,10 @@
 
     <ItemGroup>
       <Folder Include="Components\Controls\" />
-      <Folder Include="Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Libraries\ZaneStacked.Shared\ZaneStacked.Shared.csproj" />
     </ItemGroup>
 
 </Project>

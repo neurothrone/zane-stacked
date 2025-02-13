@@ -1,6 +1,4 @@
-using ZaneStacked.Api.DTOs.Skill;
-
-namespace ZaneStacked.Api.DTOs.Project;
+namespace ZaneStacked.Shared.DTOs;
 
 public record ProjectDto(
     int Id,
