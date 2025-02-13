@@ -16,7 +16,7 @@ Content-Type: application/json
 
 
 ### Login and Get JWT Token
-# Copy the token from the response and use it in the next requests
+# Copy the token from the response and replace BearerToken with the new token
 POST {{BaseApiUrl}}/auth/login
 Content-Type: application/json
 
