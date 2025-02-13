@@ -1,8 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{80976857-059C-4C8A-821A-FE8BC07590DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{79ABBB22-AD32-4FE8-9E58-A78B83BEE01D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaneStacked.Api", "Applications\ZaneStacked.Api\ZaneStacked.Api.csproj", "{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaneStacked.Api.Persistence.EFCore", "Libraries\ZaneStacked.Api.Persistence.EFCore\ZaneStacked.Api.Persistence.EFCore.csproj", "{287E82B9-4086-4ACE-AC77-7844674F0B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736} = {80976857-059C-4C8A-821A-FE8BC07590DB}
+		{287E82B9-4086-4ACE-AC77-7844674F0B75} = {79ABBB22-AD32-4FE8-9E58-A78B83BEE01D}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287E82B9-4086-4ACE-AC77-7844674F0B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287E82B9-4086-4ACE-AC77-7844674F0B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287E82B9-4086-4ACE-AC77-7844674F0B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287E82B9-4086-4ACE-AC77-7844674F0B75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
