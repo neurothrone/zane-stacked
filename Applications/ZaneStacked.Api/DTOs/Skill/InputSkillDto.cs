@@ -1,8 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using ZaneStacked.Api.Persistence.Shared.Models;
 
-namespace ZaneStacked.Api.DTOs;
+namespace ZaneStacked.Api.DTOs.Skill;
 
 public record InputSkillDto
 {

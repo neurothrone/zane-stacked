@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ZaneStacked.Api.DTOs;
+namespace ZaneStacked.Api.DTOs.Project;
 
 public record InputProjectDto
 {

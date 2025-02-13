@@ -1,4 +1,6 @@
-namespace ZaneStacked.Api.DTOs;
+using ZaneStacked.Api.DTOs.Skill;
+
+namespace ZaneStacked.Api.DTOs.Project;
 
 public record ProjectDto(
     int Id,

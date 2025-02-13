@@ -1,4 +1,5 @@
 using ZaneStacked.Api.DTOs;
+using ZaneStacked.Api.DTOs.Project;
 using ZaneStacked.Api.Persistence.Shared.Interfaces;
 using ZaneStacked.Api.Utils;
 

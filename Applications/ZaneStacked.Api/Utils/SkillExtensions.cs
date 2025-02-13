@@ -1,4 +1,5 @@
 using ZaneStacked.Api.DTOs;
+using ZaneStacked.Api.DTOs.Skill;
 using ZaneStacked.Api.Persistence.Shared.Models;
 
 namespace ZaneStacked.Api.Utils;

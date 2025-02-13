@@ -1,4 +1,4 @@
-namespace ZaneStacked.Api.DTOs;
+namespace ZaneStacked.Api.DTOs.Skill;
 
 public record SkillDto(
     int Id,
