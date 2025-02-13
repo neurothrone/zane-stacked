@@ -8,13 +8,14 @@ public static class SkillEndpoints
 {
     public static void MapSkillEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/skills");
+        var group = app.MapGroup("/api/skills")
+            .WithTags("Skills");
 
         group.MapPost("/", async (InputSkillDto skill, ISkillRepository repo) =>
         {
             var createdSkill = await repo.AddAsync(skill.ToModel());
             return Results.Created($"/api/skills/{createdSkill.Id}", createdSkill.ToDto());
-        });
+        }).RequireAuthorization();
 
         group.MapGet("/", async (ISkillRepository repo) =>
         {
@@ -28,14 +29,14 @@ public static class SkillEndpoints
             return skill == null ? Results.NotFound() : Results.Ok(skill.ToDto());
         });
 
-
         group.MapPut("/{id:int:min(0)}", async (int id, InputSkillDto skill, ISkillRepository repo) =>
         {
             var updatedSkill = await repo.UpdateAsync(skill.ToModel(id: id));
             return updatedSkill != null ? Results.Ok(updatedSkill) : Results.NotFound();
-        });
+        }).RequireAuthorization();
 
         group.MapDelete("/{id:int:min(0)}", async (int id, ISkillRepository repo) =>
-            await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound());
+            await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound()
+        ).RequireAuthorization();
     }
 }

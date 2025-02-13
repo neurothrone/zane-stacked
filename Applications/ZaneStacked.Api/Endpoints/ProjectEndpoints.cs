@@ -8,13 +8,14 @@ public static class ProjectEndpoints
 {
     public static void MapProjectEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/projects");
+        var group = app.MapGroup("/api/projects")
+            .WithTags("Projects");
 
         group.MapPost("/", async (InputProjectDto project, IProjectRepository repo) =>
         {
             var createdProject = await repo.AddAsync(project.ToModel());
             return Results.Created($"/api/projects/{createdProject.Id}", createdProject.ToDto());
-        });
+        }).RequireAuthorization();
 
         group.MapGet("/", async (IProjectRepository repo) =>
         {
@@ -33,9 +34,10 @@ public static class ProjectEndpoints
         {
             var updatedProject = await repo.UpdateAsync(project.ToModel(id: id));
             return updatedProject != null ? Results.Ok(updatedProject) : Results.NotFound();
-        });
+        }).RequireAuthorization();
 
         group.MapDelete("/{id:int:min(0)}", async (int id, IProjectRepository repo) =>
-            await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound());
+            await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound()
+        ).RequireAuthorization();
     }
 }
