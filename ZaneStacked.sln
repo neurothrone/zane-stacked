@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaneStacked.Web", "Applications\ZaneStacked.Web\ZaneStacked.Web.csproj", "{49D82DBA-11E0-4A58-8490-8F462BDE28A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,7 @@ Global
 		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736} = {80976857-059C-4C8A-821A-FE8BC07590DB}
 		{287E82B9-4086-4ACE-AC77-7844674F0B75} = {79ABBB22-AD32-4FE8-9E58-A78B83BEE01D}
 		{1077BD2D-5D2D-430A-BA2A-C765E56FEB35} = {79ABBB22-AD32-4FE8-9E58-A78B83BEE01D}
+		{49D82DBA-11E0-4A58-8490-8F462BDE28A0} = {80976857-059C-4C8A-821A-FE8BC07590DB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D5ED2C7B-C529-4EE5-85EB-D8D91D1FF736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,5 +41,9 @@ Global
 		{1077BD2D-5D2D-430A-BA2A-C765E56FEB35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1077BD2D-5D2D-430A-BA2A-C765E56FEB35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1077BD2D-5D2D-430A-BA2A-C765E56FEB35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49D82DBA-11E0-4A58-8490-8F462BDE28A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49D82DBA-11E0-4A58-8490-8F462BDE28A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49D82DBA-11E0-4A58-8490-8F462BDE28A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49D82DBA-11E0-4A58-8490-8F462BDE28A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
