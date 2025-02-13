@@ -1,4 +1,4 @@
-namespace ZaneStacked.Api.Persistence.EFCore.Models;
+namespace ZaneStacked.Api.Persistence.Shared.Models;
 
 public class Project
 {

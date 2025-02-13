@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ZaneStacked.Api.Persistence.EFCore.Models;
+using ZaneStacked.Api.Persistence.Shared.Models;
 
 namespace ZaneStacked.Api.Persistence.EFCore.Data;
 
