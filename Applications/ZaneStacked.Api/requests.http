@@ -1,6 +1,98 @@
-@ZaneStacked.Api_HostAddress = http://localhost:5231
+#@BaseApiUrl = http://localhost:5231/api
+@BaseApiUrl = https://localhost:7083/api
 
-GET {{ZaneStacked.Api_HostAddress}}/weatherforecast/
+@BearerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDU4MTdkYy05OTczLTQ5NDYtYmEyYS1iMmIwY2FiYTExZGEiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTczOTQ0MzczMCwiaXNzIjoiemFuZXN0YWNrZWQifQ.Oeza5RBqnPdG-VbB3M5XfpsrKEqvu_wj0_KBnU0vIX4
+
+
+### Register a New User
+POST {{BaseApiUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "email": "admin@example.com",
+  "password": "SecurePass123!"
+}
+
+
+### Login and Get JWT Token
+# Copy the token from the response and use it in the next requests
+POST {{BaseApiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "SecurePass123!"
+}
+
+
+### Get All Skills (Public)
+GET {{BaseApiUrl}}/skills
 Accept: application/json
 
-###
+
+### Get All Projects (Public)
+GET {{BaseApiUrl}}/projects
+Accept: application/json
+
+
+### Create a Skill (Unauthorized - Should Fail)
+POST {{BaseApiUrl}}/skills
+Content-Type: application/json
+
+{
+  "name": "GraphQL",
+  "yearsOfExperience": 1,
+  "proficiency": "Intermediate"
+}
+
+
+### Create a Skill (Authorized - Should Succeed)
+POST {{BaseApiUrl}}/skills
+Content-Type: application/json
+Authorization: Bearer {{BearerToken}}
+
+{
+  "name": "GraphQL",
+  "yearsOfExperience": 1,
+  "proficiency": "Intermediate"
+}
+
+
+### Get Skill By ID (Public)
+GET {{BaseApiUrl}}/skills/1
+Accept: application/json
+
+
+### Update Skill (Unauthorized - Should Fail)
+PUT {{BaseApiUrl}}/skills/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "GraphQL",
+  "yearsOfExperience": 2,
+  "proficiency": "Advanced"
+}
+
+
+### Update Skill (Authorized - Should Succeed)
+PUT {{BaseApiUrl}}/skills/1
+Content-Type: application/json
+Authorization: Bearer {{BearerToken}}
+
+{
+  "id": 1,
+  "name": "GraphQL",
+  "yearsOfExperience": 2,
+  "proficiency": "Advanced"
+}
+
+
+### Delete Skill (Unauthorized - Should Fail)
+DELETE {{BaseApiUrl}}/skills/1
+
+
+### Delete Skill (Authorized - Should Succeed)
+DELETE {{BaseApiUrl}}/skills/9
+Authorization: Bearer {{BearerToken}}
