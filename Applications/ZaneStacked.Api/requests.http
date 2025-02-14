@@ -1,8 +1,7 @@
 #@BaseApiUrl = http://localhost:5231/api
 @BaseApiUrl = https://localhost:7083/api
 
-@BearerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDU4MTdkYy05OTczLTQ5NDYtYmEyYS1iMmIwY2FiYTExZGEiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTczOTQ0MzczMCwiaXNzIjoiemFuZXN0YWNrZWQifQ.Oeza5RBqnPdG-VbB3M5XfpsrKEqvu_wj0_KBnU0vIX4
-
+@BearerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YWQ3ODIzMS02NGYxLTRhZTYtODQyYi1kMzA1YWJmMDM3M2UiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTczOTUxMjUwNiwiaXNzIjoiemFuZXN0YWNrZWQifQ.6GG5lohqqQPN8eckTe9k-VOAbr8eMVn0xzDW2Llr0Kc
 
 ### Register a New User
 POST {{BaseApiUrl}}/auth/register
