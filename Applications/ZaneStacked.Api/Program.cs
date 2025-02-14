@@ -1,9 +1,7 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ZaneStacked.Api.Endpoints;
+using ZaneStacked.Api.Extensions;
 using ZaneStacked.Api.Persistence.EFCore.Data;
 using ZaneStacked.Api.Persistence.EFCore.Models;
 using ZaneStacked.Api.Persistence.EFCore.Repositories;
@@ -11,86 +9,87 @@ using ZaneStacked.Api.Persistence.Shared.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Source: https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAssemblyStandaloneWithIdentity
+
+// Establish cookie authentication
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+
+// Configure authorization
+builder.Services.AddAuthorizationBuilder();
 
 // Database Configuration
 builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
     options.UseSqlite("Data Source=zane-stacked.db"));
 
-// Identity Setup
-builder.Services.AddIdentity<AppUser, IdentityRole>()
+// add the database (in memory for the sample)
+// builder.Services.AddDbContext<ZaneStackedDbContext>(
+//     options =>
+//     {
+//         options.UseInMemoryDatabase("AppDb");
+//         //For debugging only: options.EnableDetailedErrors(true);
+//         //For debugging only: options.EnableSensitiveDataLogging(true);
+//     });
+
+builder.Services.AddIdentityCore<AppUser>()
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ZaneStackedDbContext>()
-    .AddDefaultTokenProviders();
+    .AddApiEndpoints();
 
-builder.Services.AddScoped<ISkillRepository, SkillRepository>();
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-
-// JWT Authentication Configuration
-var jwtKey = builder.Configuration["Jwt:Key"];
-if (string.IsNullOrEmpty(jwtKey) || jwtKey.Length < 16)
-    throw new Exception("JWT Key must be at least 16 characters long.");
-
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "zanestacked";
-
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateIssuer = true,
-            ValidateAudience = false,
-            ValidIssuer = jwtIssuer
-        };
-    });
-builder.Services.AddAuthorization();
+builder.Services.AddCors(
+    options => options.AddPolicy(
+        "AllowWasmOrigin",
+        policy => policy
+            .WithOrigins(
+                builder.Configuration["ApiUrl"] ?? throw new Exception("ApiUrl must be set in appsettings.json"),
+                builder.Configuration["ClientUrl"] ?? throw new Exception("ClientUrl must be set in appsettings.json")
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowWasmOrigin", policy => policy
-        .WithOrigins(builder.Configuration["ClientUrl"] ??
-                     throw new Exception("ClientUrl must be set in appsettings.json"))
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-    );
-});
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // Apply migrations
+    await app.ApplyMigrations();
+
+    // Seed the database
+    await using var scope = app.Services.CreateAsyncScope();
+    await DbInitializer.InitializeAsync(scope.ServiceProvider);
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Create routes for the identity endpoints
+app.MapIdentityApi<AppUser>();
+
+// Activate the CORS policy
+app.UseCors("AllowWasmOrigin");
+
+// Enable authentication and authorization after CORS Middleware
+// processing (UseCors) in case the Authorization Middleware tries
+// to initiate a challenge before the CORS Middleware has a chance
+// to set the appropriate headers.
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("AllowWasmOrigin");
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => "Welcome to ZaneStacked API!");
 app.MapAuthEndpoints();
 app.MapSkillEndpoints();
 app.MapProjectEndpoints();
-
-app.MapGet("/", () => "Welcome to ZaneStacked API!");
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    DbInitializer.Seed(services);
-}
 
 app.Run();

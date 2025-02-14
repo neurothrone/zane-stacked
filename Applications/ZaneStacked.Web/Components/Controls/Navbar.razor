@@ -1,0 +1,11 @@
+<AuthorizeView>
+    <Authorized>
+        <a href="admin">Admin</a>
+        <a href="settings">Settings</a>
+        Logged in as @context.User.Identity?.Name. <a href="logout">Logout</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="login">Login</a>
+        <a href="register">Register</a>
+    </NotAuthorized>
+</AuthorizeView>

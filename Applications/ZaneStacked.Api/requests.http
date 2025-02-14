@@ -1,27 +1,27 @@
-#@BaseApiUrl = http://localhost:5231/api
-@BaseApiUrl = https://localhost:7083/api
+#@BaseApiUrl = http://localhost:5001/api
+@BaseApiUrl = https://localhost:7001/api
 
-@BearerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1YWQ3ODIzMS02NGYxLTRhZTYtODQyYi1kMzA1YWJmMDM3M2UiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTczOTUxMjUwNiwiaXNzIjoiemFuZXN0YWNrZWQifQ.6GG5lohqqQPN8eckTe9k-VOAbr8eMVn0xzDW2Llr0Kc
+@BearerToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiOTk4NjE4Ni0zOTkxLTRkNTYtOWE0MC1iOTMzZjVhZTJjMDIiLCJ1bmlxdWVfbmFtZSI6InphbmVAZXhhbXBsZS5jb20iLCJlbWFpbCI6InphbmVAZXhhbXBsZS5jb20iLCJleHAiOjE3Mzk1MjM1OTAsImlzcyI6InphbmVzdGFja2VkIn0.73aZrJBie1XvX0j4zO45SW9lMfidFTYWER9C6vf1Spg
 
 ### Register a New User
 POST {{BaseApiUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "email": "admin@example.com",
-  "password": "SecurePass123!"
+  "username": "user",
+  "email": "user@example.com",
+  "password": "Password1*"
 }
 
 
 ### Login and Get JWT Token
 # Copy the token from the response and replace BearerToken with the new token
-POST {{BaseApiUrl}}/auth/login
+POST {{BaseApiUrl}}/auth/login-jwt
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "password": "SecurePass123!"
+  "username": "user@example.com",
+  "password": "Password1*"
 }
 
 

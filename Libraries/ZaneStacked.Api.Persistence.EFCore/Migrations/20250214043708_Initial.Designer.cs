@@ -11,8 +11,8 @@ using ZaneStacked.Api.Persistence.EFCore.Data;
 namespace ZaneStacked.Api.Persistence.EFCore.Migrations
 {
     [DbContext(typeof(ZaneStackedDbContext))]
-    [Migration("20250213073453_AddIdentity")]
-    partial class AddIdentity
+    [Migration("20250214043708_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

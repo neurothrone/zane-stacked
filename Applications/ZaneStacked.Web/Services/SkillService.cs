@@ -7,9 +7,9 @@ public class SkillService
 {
     private readonly HttpClient _httpClient;
 
-    public SkillService(HttpClient httpClient)
+    public SkillService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Auth");
     }
 
     public async Task<List<SkillDto>> GetSkillsAsync()

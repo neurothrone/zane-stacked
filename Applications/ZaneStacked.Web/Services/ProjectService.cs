@@ -7,9 +7,9 @@ public class ProjectService
 {
     private readonly HttpClient _httpClient;
 
-    public ProjectService(HttpClient httpClient)
+    public ProjectService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Auth");
     }
 
     public async Task<List<ProjectDto>> GetProjectsAsync()
