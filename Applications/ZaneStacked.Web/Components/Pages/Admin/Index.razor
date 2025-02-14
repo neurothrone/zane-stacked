@@ -1,0 +1,20 @@
+@page "/admin"
+@layout AdminLayout
+@using Microsoft.AspNetCore.Authorization
+@using ZaneStacked.Web.Components.Controls
+@attribute [Authorize]
+@inject NavigationManager Navigation
+
+<Navbar/>
+<p>Welcome, Admin! You can manage skills and projects here.</p>
+
+<button class="btn btn-danger" @onclick="Logout">Logout</button>
+
+@code {
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("/logout");
+    }
+
+}

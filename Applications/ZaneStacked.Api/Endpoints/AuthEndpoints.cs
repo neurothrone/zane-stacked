@@ -16,25 +16,61 @@ public static class AuthEndpoints
         var group = app.MapGroup("/api/auth")
             .WithTags("Auth");
 
-        group.MapPost("/register",
-            async ([FromBody] AuthRegisterRequest model, UserManager<AppUser> userManager) =>
+        group.MapGet("/state",
+            (HttpContext httpContext) => httpContext.User.Identity is { IsAuthenticated: true }
+                ? Results.Ok(new { Username = httpContext.User.Identity.Name })
+                : Results.Ok());
+
+        // provide an endpoint to clear the cookie for logout
+        //
+        // For more information on the logout endpoint and antiforgery, see:
+        // https://learn.microsoft.com/aspnet/core/blazor/security/webassembly/standalone-with-identity#antiforgery-support
+        group.MapPost("/logout", async (SignInManager<AppUser> signInManager, [FromBody] object empty) =>
+        {
+            if (empty is not null)
             {
-                var user = new AppUser { UserName = model.Username, Email = model.Email };
-                var result = await userManager.CreateAsync(user, model.Password);
+                await signInManager.SignOutAsync();
+                return Results.Ok();
+            }
 
-                return result.Succeeded ? Results.Ok("User registered") : Results.BadRequest(result.Errors);
-            });
+            return Results.Unauthorized();
+        }).RequireAuthorization();
 
-        group.MapPost("/login",
-            async ([FromBody] AuthLoginRequest model, UserManager<AppUser> userManager, IConfiguration config) =>
+        // provide an endpoint for user roles
+        group.MapGet("/roles", (ClaimsPrincipal user) =>
+        {
+            if (user.Identity is not null && user.Identity.IsAuthenticated)
             {
-                var user = await userManager.FindByNameAsync(model.Username);
-                if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
-                    return Results.Unauthorized();
+                var identity = (ClaimsIdentity)user.Identity;
+                var roles = identity.FindAll(identity.RoleClaimType)
+                    .Select(c =>
+                        new
+                        {
+                            c.Issuer,
+                            c.OriginalIssuer,
+                            c.Type,
+                            c.Value,
+                            c.ValueType
+                        });
 
-                var token = GenerateJwtToken(user, config);
-                return Results.Ok(new { token });
-            });
+                return TypedResults.Json(roles);
+            }
+
+            return Results.Unauthorized();
+        }).RequireAuthorization();
+
+        group.MapPost("/login-jwt", async (
+            [FromBody] AuthLoginDto model,
+            UserManager<AppUser> userManager,
+            IConfiguration config) =>
+        {
+            var user = await userManager.FindByEmailAsync(model.Username);
+            if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
+                return Results.Unauthorized();
+
+            var token = GenerateJwtToken(user, config);
+            return Results.Ok(new { Token = token });
+        });
     }
 
     private static string GenerateJwtToken(AppUser user, IConfiguration config)

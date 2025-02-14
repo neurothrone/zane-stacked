@@ -1,17 +1,97 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ZaneStacked.Api.Persistence.EFCore.Models;
 using ZaneStacked.Api.Persistence.Shared.Models;
 
 namespace ZaneStacked.Api.Persistence.EFCore.Data;
 
 public static class DbInitializer
 {
-    public static void Seed(IServiceProvider serviceProvider)
+    private class SeedUser : AppUser
     {
-        using var context = serviceProvider.GetRequiredService<ZaneStackedDbContext>();
+        public string[]? RoleList { get; set; }
+    }
 
-        // Ensure database is created
-        context.Database.Migrate();
+    private static readonly IEnumerable<SeedUser> SeedUsers =
+    [
+        new()
+        {
+            Email = "zane@example.com",
+            NormalizedEmail = "ZANE@EXAMPLE.COM",
+            NormalizedUserName = "ZANE@EXAMPLE.COM",
+            RoleList = ["Admin", "Manager"],
+            UserName = "zane@example.com"
+        },
+        new()
+        {
+            Email = "guest@example.com",
+            NormalizedEmail = "GUEST@EXAMPLE.COM",
+            NormalizedUserName = "GUEST@EXAMPLE.COM",
+            RoleList = ["User"],
+            UserName = "guest@example.com"
+        },
+    ];
+
+    public static async Task InitializeAsync(IServiceProvider serviceProvider)
+    {
+        await SeedUsersAsync(serviceProvider);
+        await SeedData(serviceProvider);
+    }
+
+    private static async Task SeedUsersAsync(IServiceProvider serviceProvider)
+    {
+        await using var context = new ZaneStackedDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<ZaneStackedDbContext>>());
+
+        if (context.Users.Any())
+        {
+            return;
+        }
+
+        var userStore = new UserStore<AppUser>(context);
+        var password = new PasswordHasher<AppUser>();
+
+        using var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        string[] roles = ["Admin", "Manager", "User"];
+
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        using var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+
+        foreach (var user in SeedUsers)
+        {
+            var hashed = password.HashPassword(user, "Password1!");
+            user.PasswordHash = hashed;
+            await userStore.CreateAsync(user);
+
+            if (user.Email is not null)
+            {
+                var appUser = await userManager.FindByEmailAsync(user.Email);
+
+                if (appUser is not null && user.RoleList is not null)
+                {
+                    await userManager.AddToRolesAsync(appUser, user.RoleList);
+                }
+            }
+        }
+
+        await context.SaveChangesAsync();
+    }
+
+
+    private static async Task SeedData(IServiceProvider serviceProvider)
+    {
+        await using var context = new ZaneStackedDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<ZaneStackedDbContext>>());
 
         // Prevent duplicate seeding
         if (context.Projects.Any() || context.Skills.Any())
@@ -30,8 +110,8 @@ public static class DbInitializer
             new() { Name = "AWS", YearsOfExperience = 1, Proficiency = "Intermediate" }
         };
 
-        context.Skills.AddRange(skills);
-        context.SaveChanges();
+        await context.Skills.AddRangeAsync(skills);
+        await context.SaveChangesAsync();
 
         // Create projects
         var projects = new List<Project>
@@ -91,7 +171,7 @@ public static class DbInitializer
             }
         };
 
-        context.Projects.AddRange(projects);
-        context.SaveChanges();
+        await context.Projects.AddRangeAsync(projects);
+        await context.SaveChangesAsync();
     }
 }
