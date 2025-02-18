@@ -1,5 +1,7 @@
 @page "/admin/skills"
+@using Microsoft.AspNetCore.Authorization
 @layout AdminLayout
+@attribute [Authorize]
 
 <h1>Manage Skills</h1>
 <p>Add, List, Edit, Delete</p>
