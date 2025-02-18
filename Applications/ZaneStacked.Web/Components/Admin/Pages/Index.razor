@@ -1,12 +1,14 @@
 @page "/admin"
 @layout AdminLayout
+
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
+
 @inject NavigationManager Navigation
 
-<PageTitle>Admin - ZaneStacked</PageTitle>
+<PageTitle>Dashboard - ZaneStacked</PageTitle>
 
-<p>Welcome, Admin! You can manage skills and projects here.</p>
+<p>Welcome, Admin! Dashboard here.</p>
 
 <button class="btn btn-danger" @onclick="Logout">Logout</button>
 
