@@ -1,0 +1,35 @@
+@* <div class="admin-nav"> *@
+@*     <div class="admin-user"> *@
+@*         <i class="bi bi-person-circle"></i> *@
+@*         <span>UserName</span> *@
+@*         $1$ <span>@UserName</span> #1# *@
+@*     </div> *@
+@*     <ul class="admin-links"> *@
+@*         <li><NavLink href="/admin/dashboard"><i class="bi bi-house"></i> Dashboard</NavLink></li> *@
+@*         <li><NavLink href="/admin/skills"><i class="bi bi-lightbulb"></i> Skills</NavLink></li> *@
+@*         <li><NavLink href="/admin/projects"><i class="bi bi-folder"></i> Projects</NavLink></li> *@
+@*         <li><NavLink href="/admin/settings"><i class="bi bi-gear"></i> Settings</NavLink></li> *@
+@*     </ul> *@
+@*     <div class="logout"> *@
+@*         <button class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</button> *@
+@*         $1$ <button class="btn btn-danger" @onclick="Logout"><i class="bi bi-box-arrow-right"></i> Logout</button> #1# *@
+@*     </div> *@
+@* </div> *@
+
+<div class="offcanvas-content">
+    <div class="admin-user">
+        <i class="bi bi-person-circle"></i>
+        @* <span>@UserName</span> *@
+        <span>UserName</span>
+    </div>
+    <ul class="admin-links">
+        <li><NavLink href="/admin/dashboard"><i class="bi bi-house"></i> Dashboard</NavLink></li>
+        <li><NavLink href="/admin/skills"><i class="bi bi-lightbulb"></i> Skills</NavLink></li>
+        <li><NavLink href="/admin/projects"><i class="bi bi-folder"></i> Projects</NavLink></li>
+        <li><NavLink href="/admin/settings"><i class="bi bi-gear"></i> Settings</NavLink></li>
+    </ul>
+    <div class="logout">
+        <button class="btn btn-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        @* <button class="btn btn-danger" @onclick="Logout"><i class="bi bi-box-arrow-right"></i> Logout</button> *@
+    </div>
+</div>

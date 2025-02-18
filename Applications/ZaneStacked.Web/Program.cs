@@ -40,5 +40,7 @@ builder.Services.AddHttpClient(
 builder.Services.AddScoped<SkillService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<ThemeService>();
+builder.Services.AddScoped<AdminAppState>();
+builder.Services.AddScoped<BrowserService>();
 
 await builder.Build().RunAsync();

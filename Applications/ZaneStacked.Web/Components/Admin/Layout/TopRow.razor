@@ -1,0 +1,19 @@
+@using ZaneStacked.Web.Services
+@inject AdminAppState AdminState
+
+<div class="admin-topbar">
+    <button class="hamburger d-md-none @(AdminState.IsMenuOpen ? "hidden" : "")" @onclick="ToggleMenu">
+        <i class="bi bi-list"></i>
+    </button>
+    <h2 class="admin-title">@AdminState.CurrentPageTitle</h2>
+</div>
+
+@code {
+
+    private async Task ToggleMenu()
+    {
+        await AdminState.ToggleMenu();
+        StateHasChanged(); // Ensure UI updates
+    }
+
+}
