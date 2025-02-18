@@ -1,0 +1,11 @@
+.badge {
+    background-color: #ffcc00 !important;
+    color: black;
+    font-weight: bold;
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+}
+
+[data-bs-theme="dark"] .badge {
+    box-shadow: 0 0 6px rgba(255, 204, 0, 0.5);
+}

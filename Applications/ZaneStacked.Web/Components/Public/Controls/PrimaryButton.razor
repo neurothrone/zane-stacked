@@ -1,0 +1,19 @@
+<a href="@Href" target="_blank" class="btn btn-custom @CssClass">
+    <i class="bi @Icon"></i> @Text
+</a>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public string Href { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Icon { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+}

@@ -22,7 +22,6 @@ builder.Services.AddAuthorizationBuilder();
 builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
     options.UseSqlite("Data Source=zane-stacked.db"));
 
-// add the database (in memory for the sample)
 // builder.Services.AddDbContext<ZaneStackedDbContext>(
 //     options =>
 //     {

@@ -14,10 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Components\Layout\MainLayout.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Counter.razor" />
       <_ContentIncludedByDefault Remove="Pages\Home.razor" />
       <_ContentIncludedByDefault Remove="Pages\Weather.razor" />
@@ -31,6 +27,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Libraries\ZaneStacked.Shared\ZaneStacked.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Admin\Controls\" />
     </ItemGroup>
 
 </Project>

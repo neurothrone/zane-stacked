@@ -1,7 +1,9 @@
 @page "/settings"
 @layout AdminLayout
+
 @using Microsoft.AspNetCore.Authorization
-@using ZaneStacked.Web.Components.Controls
+@using ZaneStacked.Web.Components.Shared.Controls
+
 @attribute [Authorize(Roles = "Admin")]
 @inject NavigationManager Navigation
 

@@ -72,7 +72,7 @@ public static class AuthEndpoints
             return Results.Ok(new { Token = token });
         });
     }
-
+    
     private static string GenerateJwtToken(AppUser user, IConfiguration config)
     {
         var jwtKey = config["Jwt:Key"] ?? "supersecretkey";

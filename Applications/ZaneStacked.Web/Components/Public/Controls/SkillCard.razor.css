@@ -1,0 +1,4 @@
+.skill-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 14px rgba(123, 44, 191, 0.3);
+}

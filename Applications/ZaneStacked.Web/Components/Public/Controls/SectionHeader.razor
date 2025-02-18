@@ -1,0 +1,11 @@
+<h2 class="section-header @CssClass">@Title</h2>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+}

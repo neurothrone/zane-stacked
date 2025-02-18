@@ -1,0 +1,15 @@
+<header class="zane-hero text-center @CssClass">
+    <h1 class="display-4">Welcome to ZaneStacked</h1>
+    <p class="lead">A futuristic, comedic, and technically over-engineered full-stack portfolio.</p>
+    <div class="d-flex justify-content-center mt-3 gap-4">
+        <PrimaryButton Href="https://github.com/neurothrone" Icon="bi-github" Text="GitHub"/>
+        <PrimaryButton Href="https://www.linkedin.com/in/neurothrone" Icon="bi-linkedin" Text="LinkedIn"/>
+    </div>
+</header>
+
+@code {
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+}

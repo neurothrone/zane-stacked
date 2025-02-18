@@ -1,0 +1,15 @@
+@using ZaneStacked.Shared.DTOs
+<div class="card skill-card h-100 text-center">
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title">@Skill.Name</h5>
+        <p class="card-text flex-grow-1">@Skill.Proficiency</p>
+        <small class="text-muted">@Skill.YearsOfExperience years of experience</small>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public required SkillDto Skill { get; set; }
+
+}

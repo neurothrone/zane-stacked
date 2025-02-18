@@ -1,0 +1,11 @@
+<span class="badge bg-secondary @CssClass">@Name</span>
+
+@code {
+    
+    [Parameter, EditorRequired]
+    public required string Name { get; set; }
+    
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+    
+}

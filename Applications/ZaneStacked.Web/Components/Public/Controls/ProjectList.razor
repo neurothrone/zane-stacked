@@ -1,0 +1,38 @@
+@using ZaneStacked.Shared.DTOs
+@using ZaneStacked.Web.Services
+@inject ProjectService ProjectService
+
+<section class="@CssClass">
+    <SectionHeader Title="Projects" CssClass="text-center" />
+    <div class="row justify-content-center">
+        @if (_projects is null)
+        {
+            <p class="text-center mt-4">Loading projects...</p>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                @foreach (var project in _projects)
+                {
+                    <div class="col">
+                        <ProjectCard Project="project"/>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    private List<ProjectDto>? _projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _projects = await ProjectService.GetProjectsAsync();
+    }
+
+}

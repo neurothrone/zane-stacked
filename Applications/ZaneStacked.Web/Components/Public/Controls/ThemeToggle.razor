@@ -1,0 +1,30 @@
+@using ZaneStacked.Web.Services
+
+@inject ThemeService ThemeService
+
+<button class="theme-toggle" @onclick="ToggleTheme">
+    <i class="@_currentIcon"></i>
+</button>
+
+@code {
+    private string _currentTheme = "dark";
+    private string _currentIcon = "bi bi bi-sun-fill";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _currentTheme = await ThemeService.GetThemeAsync();
+        SetIcon();
+    }
+
+    private async Task ToggleTheme()
+    {
+        _currentTheme = _currentTheme == "light" ? "dark" : "light";
+        await ThemeService.SetThemeAsync(_currentTheme);
+        SetIcon();
+    }
+
+    private void SetIcon()
+    {
+        _currentIcon = _currentTheme == "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
+    }
+}
