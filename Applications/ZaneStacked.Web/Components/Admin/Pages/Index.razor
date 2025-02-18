@@ -1,9 +1,10 @@
 @page "/admin"
 @layout AdminLayout
 @using Microsoft.AspNetCore.Authorization
-@using ZaneStacked.Web.Components.Shared.Controls
 @attribute [Authorize]
 @inject NavigationManager Navigation
+
+<PageTitle>Admin - ZaneStacked</PageTitle>
 
 <Navbar/>
 <p>Welcome, Admin! You can manage skills and projects here.</p>
