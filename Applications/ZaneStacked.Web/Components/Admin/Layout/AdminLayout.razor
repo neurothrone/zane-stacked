@@ -1,5 +1,25 @@
 @inherits LayoutComponentBase
 
-<div class="container">
-    @Body
-</div>
+<AuthorizeView>
+    <Authorized>
+        <AdminNavbar/>
+
+        <div class="main-container">
+            <AdminSidebar/>
+            <AdminNavrail/>
+
+            <div class="content">
+                @Body
+            </div>
+
+            <AdminOffCanvas/>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="main-container">
+            <div class="content">
+                @Body
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

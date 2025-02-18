@@ -1,0 +1,32 @@
+<div class="offcanvas offcanvas-start bg-dark text-white d-md-none" tabindex="-1" id="mobileSidebar">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column px-0 pb-0">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <NavLink class="nav-link text-white" href="/admin" Match="NavLinkMatch.All" ActiveClass="active">
+                    <i class="bi bi-house-door me-2"></i>Dashboard
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link text-white" href="/admin/skills" ActiveClass="active">
+                    <i class="bi bi-lightbulb me-2"></i>Skills
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link text-white" href="/admin/projects" ActiveClass="active">
+                    <i class="bi bi-folder me-2"></i>Projects
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link text-white" href="/admin/settings" ActiveClass="active">
+                    <i class="bi bi-gear me-2"></i>Settings
+                </NavLink>
+            </li>
+        </ul>
+
+        <AdminDropdown/>
+    </div>
+</div>

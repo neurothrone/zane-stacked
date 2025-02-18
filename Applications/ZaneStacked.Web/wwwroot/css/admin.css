@@ -1,0 +1,65 @@
+.admin-navbar {
+    background-color: #212529;
+    border-bottom: 1px solid #444;
+    height: 56px; /* Standard Bootstrap navbar height */
+}
+
+.main-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Scrollable main content */
+.content {
+    overflow-y: auto;
+    padding: 1rem;
+    margin-top: 56px; /* Match navbar height */
+}
+
+.navrail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-right: 1px solid #444; /* Match sidebar and navbar */
+    background-color: #212529;
+    padding-top: 56px; /* Push below navbar */
+    overflow: visible; /* Prevent clipping */
+}
+
+.navrail .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 4.5rem; /* Customize button height */
+    border-bottom: 1px solid #444;
+    border-radius: 0; /* No rounded corners */
+}
+
+.navrail .nav-link i {
+    font-size: 24px; /* Icon size */
+}
+
+.navrail .dropdown {
+    margin-top: auto; /* Forces it to the bottom */
+    /*text-align: center;*/
+}
+
+.sidebar {
+    margin-top: 56px; /* Match navbar height */
+    border-right: 1px solid #444;
+}
+
+.mobile-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.offcanvas-header {
+    padding: 0.75rem 1rem; /* Match navbar */
+}
+
+.active {
+    background-color: var(--primary-purple) !important;
+}

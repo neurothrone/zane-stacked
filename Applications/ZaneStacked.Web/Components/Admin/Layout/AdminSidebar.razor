@@ -1,0 +1,26 @@
+<div class="sidebar d-none d-lg-flex flex-column flex-shrink-0 pt-3 text-bg-dark" style="width: 280px;">
+    <ul class="nav nav-pills flex-column mb-auto px-3">
+        <li>
+            <NavLink href="/admin" Match="NavLinkMatch.All" class="nav-link text-white" ActiveClass="active">
+                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            </NavLink>
+        </li>
+        <li>
+            <NavLink href="/admin/skills" class="nav-link text-white" ActiveClass="active">
+                <i class="bi bi-table me-2"></i>Skills
+            </NavLink>
+        </li>
+        <li>
+            <NavLink href="/admin/projects" class="nav-link text-white" ActiveClass="active">
+                <i class="bi bi-box me-2"></i>Projects
+            </NavLink>
+        </li>
+        <li>
+            <NavLink href="/admin/settings" class="nav-link text-white" ActiveClass="active">
+                <i class="bi bi-people me-2"></i>Settings
+            </NavLink>
+        </li>
+    </ul>
+
+    <AdminDropdown/>
+</div>
