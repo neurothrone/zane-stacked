@@ -194,6 +194,12 @@
     private void SelectSkill(SkillDto skill)
     {
         _selectedSkill = _selectedSkill?.Id == skill.Id ? null : skill;
+        
+        if (_selectedSkill is not null)
+            return;
+        
+        _currentSkill.Id = 0;
+        _isEditing = false;
     }
 
     private void EditSkill()
