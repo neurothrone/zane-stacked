@@ -6,9 +6,13 @@
 
 <main class="container-fluid">
     <h2 class="mb-3 mt-2">Dashboard</h2>
-    <p>Welcome, Admin! Dashboard here.</p>
-    
-    <button class="btn btn-danger" @onclick="Logout">Logout</button>
+    <AuthorizeView>
+        <Authorized>
+            <p>Welcome <span>@context.User.Identity?.Name</span></p>
+        </Authorized>
+    </AuthorizeView>
+
+    @* <button class="btn btn-danger" @onclick="Logout">Logout</button> *@
 </main>
 
 @code {
