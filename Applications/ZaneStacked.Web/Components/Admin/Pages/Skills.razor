@@ -1,14 +1,247 @@
 @page "/admin/skills"
 @layout AdminLayout
-
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
+
+@using System.ComponentModel.DataAnnotations
+@using ZaneStacked.Shared.DTOs
+@using ZaneStacked.Web.Services
 
 <PageTitle>Skills - ZaneStacked</PageTitle>
 
-<h1>Manage Skills</h1>
-<p>Add, List, Edit, Delete</p>
+<main class="container-fluid">
+    <!-- Header -->
+    <h2 class="mb-3 mt-2">Skills</h2>
+
+    <!-- Add Skill Button -->
+    <button class="btn btn-custom mb-3" @onclick="ToggleEditForm">
+        @(_showForm ? "Cancel" : "Add Skill")
+    </button>
+
+    <!-- Skill Form (Add/Edit) -->
+    @if (_showForm)
+    {
+        <div class="card p-3 mb-3">
+            <EditForm Model="_currentSkill" OnValidSubmit="SaveSkill">
+                <DataAnnotationsValidator/>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentSkill.Name" class="form-control"/>
+                    <label>Skill Name</label>
+                    <ValidationMessage For="() => _currentSkill.Name" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputNumber @bind-Value="_currentSkill.YearsOfExperience" class="form-control"/>
+                    <label>Years of Experience</label>
+                    <ValidationMessage For="() => _currentSkill.YearsOfExperience" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentSkill.Proficiency" class="form-control"/>
+                    <label>Proficiency</label>
+                    <ValidationMessage For="() => _currentSkill.Proficiency" class="text-danger"/>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-custom w-100">@(_isEditing && _selectedSkill is not null ? "Update" : "Add")</button>
+            </EditForm>
+        </div>
+    }
+
+    <!-- Search Input -->
+    @* <input type="text" *@
+    @*        class="form-control mb-3" *@
+    @*        placeholder="Search skills..." *@
+    @*        @bind="searchTerm" *@
+    @*        @oninput="FilterSkills"/> *@
+
+    <input type="text"
+           class="form-control mb-3"
+           placeholder="Search skills..."
+           @bind="_searchTerm"/>
+
+    @if (_allSkills is null)
+    {
+        <p>Loading...</p>
+    }
+    else if (_allSkills.Count == 0)
+    {
+        <p>No skills found.</p>
+    }
+    else
+    {
+        <!-- Skill List -->
+        <div class="list-group">
+            @* <Virtualize ItemsProvider="LoadSkills" ItemSize="50" Context="skill"> *@
+            <Virtualize Items="_allSkills" ItemSize="50" Context="skill">
+                <button @key="skill.Id"
+                        class="list-group-item list-group-item-action @(_selectedSkill?.Id == skill.Id ? "active" : "")"
+                        @onclick="() => SelectSkill(skill)">
+                    <div class="d-flex justify-content-between">
+                        <span>@skill.Name</span>
+                        <span>@skill.YearsOfExperience yrs</span>
+                    </div>
+                    <small class="text-muted">@skill.Proficiency</small>
+                </button>
+            </Virtualize>
+        </div>
+    }
+</main>
+
+<!-- Action Panel -->
+@if (_selectedSkill is not null)
+{
+    <div class="action-panel text-bg-dark border-top">
+        <button class="btn btn-custom" @onclick="EditSkill">Edit</button>
+        <button class="btn btn-danger" @onclick="DeleteSkill">Delete</button>
+    </div>
+}
+
 
 @code {
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    private SkillService SkillService { get; set; } = null!;
+
+    // TODO: Loading spinner
+    private List<SkillDto>? _allSkills;
+    private InputSkill _currentSkill = new();
+    private SkillDto? _selectedSkill;
+    private string _searchTerm = "";
+    private bool _isEditing;
+    private bool _showForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // await Task.Delay(TimeSpan.FromSeconds(2));
+        _allSkills = await SkillService.GetSkillsAsync();
+    }
+
+    // private async ValueTask<ItemsProviderResult<SkillDto>> LoadSkills(ItemsProviderRequest request)
+    // {
+    //     if (_allSkills.Count == 0)
+    //     {
+    //         _allSkills = await SkillService.GetSkillsAsync();
+    //     }
+    //
+    //     // Apply filtering when search term is not empty
+    //     var filteredSkills = string.IsNullOrWhiteSpace(_searchTerm)
+    //         ? _allSkills
+    //         : _allSkills.Where(s => s.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+    //
+    //     // Get only the requested slice for Virtualization
+    //     var items = filteredSkills.Skip(request.StartIndex).Take(request.Count).ToList();
+    //     return new ItemsProviderResult<SkillDto>(items, filteredSkills.Count);
+    // }
+
+    private void ToggleEditForm()
+    {
+        _showForm = !_showForm;
+        if (!_showForm)
+            return;
+
+        _isEditing = false;
+        _currentSkill = new InputSkill();
+    }
+
+    private async Task SaveSkill()
+    {
+        if (_currentSkill.Id == 0)
+        {
+            var createdSkill = await SkillService.AddSkillAsync(new SkillDto(
+                0,
+                _currentSkill.Name,
+                _currentSkill.YearsOfExperience,
+                _currentSkill.Proficiency
+            ));
+            if (createdSkill is not null)
+            {
+                _allSkills?.Insert(0, createdSkill);
+            }
+        }
+        else
+        {
+            var updatedSkill = await SkillService.UpdateSkillAsync(new SkillDto(
+                _currentSkill.Id,
+                _currentSkill.Name,
+                _currentSkill.YearsOfExperience,
+                _currentSkill.Proficiency
+            ));
+            if (updatedSkill is not null)
+            {
+                var index = _allSkills?.FindIndex(s => s.Id == updatedSkill.Id);
+                if (index is not null && index != -1 && _allSkills is not null)
+                {
+                    _allSkills[index.Value] = updatedSkill;
+                }
+            }
+
+            _isEditing = false;
+            _selectedSkill = null;
+            _showForm = false;
+        }
+
+        _currentSkill = new InputSkill();
+
+        // _isEditing = false;
+        // _selectedSkill = null;
+        // _showForm = false;
+    }
+
+    private void SelectSkill(SkillDto skill)
+    {
+        _selectedSkill = _selectedSkill?.Id == skill.Id ? null : skill;
+    }
+
+    private void EditSkill()
+    {
+        if (_selectedSkill is null)
+            return;
+
+        _isEditing = true;
+        _showForm = true;
+
+        _currentSkill = new InputSkill
+        {
+            Id = _selectedSkill.Id,
+            Name = _selectedSkill.Name,
+            YearsOfExperience = _selectedSkill.YearsOfExperience,
+            Proficiency = _selectedSkill.Proficiency
+        };
+    }
+
+    private async Task DeleteSkill()
+    {
+        if (_selectedSkill is null)
+            return;
+
+        var deleted = await SkillService.DeleteSkillAsync(_selectedSkill.Id);
+        if (deleted)
+        {
+            _allSkills?.Remove(_selectedSkill);
+        }
+
+        _selectedSkill = null;
+    }
+
+    private class InputSkill
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Range(0, 40)]
+        [Display(Name = "Years of Experience")]
+        public int YearsOfExperience { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        public string Proficiency { get; set; } = string.Empty;
+    }
 
 }
