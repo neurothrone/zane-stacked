@@ -12,6 +12,10 @@ window.focusElement = (element) => {
     }
 };
 
+window.setAdminTheme = function () {
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     let savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
