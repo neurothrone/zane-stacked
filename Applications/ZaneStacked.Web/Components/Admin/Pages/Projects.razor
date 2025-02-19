@@ -2,12 +2,255 @@
 @layout AdminLayout
 @attribute [Authorize]
 
+@using System.ComponentModel.DataAnnotations
+@using ZaneStacked.Shared.DTOs
+@using ZaneStacked.Web.Services
+
 <PageTitle>Projects - ZaneStacked</PageTitle>
 
 <main class="container-fluid">
     <h2 class="mb-3 mt-2">Projects</h2>
+
+    <!-- Add Project Button -->
+    <button class="btn btn-custom mb-3" @onclick="ToggleEditForm">
+        @(_showForm ? "Cancel" : "Add Project")
+    </button>
+
+    <!-- Project Form (Add/Edit) -->
+    @if (_showForm)
+    {
+        <div class="card p-3 mb-3">
+            <EditForm Model="_currentProject" OnValidSubmit="SaveProject">
+                <DataAnnotationsValidator/>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentProject.Name" class="form-control"/>
+                    <label>Project Name</label>
+                    <ValidationMessage For="() => _currentProject.Name" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputTextArea @bind-Value="_currentProject.Description" class="form-control"/>
+                    <label>Description</label>
+                    <ValidationMessage For="() => _currentProject.Description" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentProject.GitHubUrl" class="form-control"/>
+                    <label>GitHub Url</label>
+                    <ValidationMessage For="() => _currentProject.GitHubUrl" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentProject.DemoUrl" class="form-control"/>
+                    <label>Demo Url</label>
+                    <ValidationMessage For="() => _currentProject.DemoUrl" class="text-danger"/>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="_currentProject.FeaturedImage" class="form-control"/>
+                    <label>Featured Image</label>
+                    <ValidationMessage For="() => _currentProject.FeaturedImage" class="text-danger"/>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-custom w-100">@(_isEditing && _selectedProject is not null ? "Update" : "Add")</button>
+            </EditForm>
+        </div>
+    }
+
+    <!-- Search Input -->
+    @* <input type="text" *@
+    @*        class="form-control mb-3" *@
+    @*        placeholder="Search skills..." *@
+    @*        @bind="searchTerm" *@
+    @*        @oninput="FilterSkills"/> *@
+
+    <input type="text"
+           class="form-control mb-3"
+           placeholder="Search projects..."
+           @bind="_searchTerm"/>
+
+    @if (_allProjects is null)
+    {
+        <p>Loading...</p>
+    }
+    else if (_allProjects.Count == 0)
+    {
+        <p>No projects found.</p>
+    }
+    else
+    {
+        <!-- Project List -->
+        <div class="list-group">
+            <Virtualize Items="_allProjects" ItemSize="50" Context="project">
+                <button @key="project.Id"
+                        class="list-group-item list-group-item-action @(_selectedProject?.Id == project.Id ? "active" : "")"
+                        @onclick="() => SelectProject(project)">
+                    <div class="d-flex justify-content-between">
+                        <span>@project.Name</span>
+                        @* TODO: Add icons for each non-empty link, and if has featured image? *@
+                        <span>TODO</span>
+                    </div>
+                    <small class="text-muted">@project.Description</small>
+                </button>
+            </Virtualize>
+        </div>
+    }
 </main>
 
+<!-- Action Panel -->
+@if (_selectedProject is not null)
+{
+    <div class="action-panel text-bg-dark border-top">
+        <button class="btn btn-custom" @onclick="EditProject">Edit</button>
+        <button class="btn btn-danger" @onclick="DeleteProject">Delete</button>
+    </div>
+}
+
 @code {
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    private ProjectService ProjectService { get; set; } = null!;
+
+    // TODO: Multiple select, SelectInput for Skills
+    // TODO: Loading spinner
+    private List<ProjectDto>? _allProjects;
+    private InputProject _currentProject = new();
+    private ProjectDto? _selectedProject;
+    private string _searchTerm = "";
+    private bool _isEditing;
+    private bool _showForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // await Task.Delay(TimeSpan.FromSeconds(2));
+        _allProjects = await ProjectService.GetProjectsAsync();
+    }
+
+    private void ToggleEditForm()
+    {
+        _showForm = !_showForm;
+        if (!_showForm)
+            return;
+
+        _isEditing = false;
+        _currentProject = new InputProject();
+    }
+
+    private async Task SaveProject()
+    {
+        if (_currentProject.Id == 0)
+        {
+            var createdProject = await ProjectService.AddProjectAsync(new ProjectDto(
+                0,
+                _currentProject.Name,
+                _currentProject.Description,
+                _currentProject.GitHubUrl,
+                _currentProject.DemoUrl,
+                _currentProject.FeaturedImage,
+                []
+            ));
+            if (createdProject is not null)
+            {
+                _allProjects?.Insert(0, createdProject);
+            }
+        }
+        else
+        {
+            var updatedSkill = await ProjectService.UpdateProjectAsync(new ProjectDto(
+                _currentProject.Id,
+                _currentProject.Name,
+                _currentProject.Description,
+                _currentProject.GitHubUrl,
+                _currentProject.DemoUrl,
+                _currentProject.FeaturedImage,
+                []
+            ));
+            if (updatedSkill is not null)
+            {
+                var index = _allProjects?.FindIndex(s => s.Id == updatedSkill.Id);
+                if (index is not null && index != -1 && _allProjects is not null)
+                {
+                    _allProjects[index.Value] = updatedSkill;
+                }
+            }
+
+            _isEditing = false;
+            _selectedProject = null;
+            _showForm = false;
+        }
+
+        _currentProject = new InputProject();
+    }
+
+    private void SelectProject(ProjectDto project)
+    {
+        _selectedProject = _selectedProject?.Id == project.Id ? null : project;
+        if (_selectedProject is not null)
+            return;
+        
+        _currentProject.Id = 0;
+        _isEditing = false;
+    }
+
+    private void EditProject()
+    {
+        if (_selectedProject is null)
+            return;
+
+        _isEditing = true;
+        _showForm = true;
+
+        _currentProject = new InputProject
+        {
+            Id = _selectedProject.Id,
+            Name = _selectedProject.Name,
+            Description = _selectedProject.Description,
+            GitHubUrl = _selectedProject.GitHubUrl,
+            DemoUrl = _selectedProject.DemoUrl,
+            FeaturedImage = _selectedProject.FeaturedImage
+        };
+    }
+
+    private async Task DeleteProject()
+    {
+        if (_selectedProject is null)
+            return;
+
+        var deleted = await ProjectService.DeleteProjectAsync(_selectedProject.Id);
+        if (deleted)
+        {
+            _allProjects?.Remove(_selectedProject);
+        }
+
+        _selectedProject = null;
+    }
+
+    private class InputProject
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        public string Name { get; set; } = string.Empty;
+
+        [Required]
+        [MinLength(1)]
+        public string Description { get; set; } = string.Empty;
+
+        [Required]
+        [MinLength(1)]
+        public string GitHubUrl { get; set; } = string.Empty;
+
+        public string? DemoUrl { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        public string FeaturedImage { get; set; } = string.Empty;
+    }
 
 }
