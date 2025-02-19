@@ -1,27 +1,42 @@
 @using ZaneStacked.Web.Identity
-@inject IAccountManagement AccountManagement
 
-<div class="dropdown mt-auto border-top p-3">
-    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-       data-bs-toggle="dropdown">
-        @* <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2"> *@
-        <AuthorizeView>
-            <Authorized>
-                <strong>@(GetFirstCharacterUppercase(context.User.Identity?.Name ?? "Unknown"))</strong>
-            </Authorized>
-        </AuthorizeView>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-dark">
-        <li>
-            <a class="dropdown-item" href="#">Go to Client Page</a>
-        </li>
-        <li>
-            <button type="button" class="dropdown-item" @onclick="Logout">Sign out</button>
-        </li>
-    </ul>
-</div>
+<AuthorizeView>
+    <Authorized>
+
+        @{
+            var user = context.User.Identity?.Name ?? "Unknown";
+            var initial = GetFirstCharacterUppercase(user);
+        }
+
+        <div class="dropdown mt-auto border-top p-3">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+               data-bs-toggle="dropdown">
+                @* <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2"> *@
+
+                @* <strong>@(GetFirstCharacterUppercase(context.User.Identity?.Name ?? "Unknown"))</strong> *@
+                <strong>@initial</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                    <h6 class="dropdown-header">@user</h6>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Go to Client Page</a>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item" @onclick="Logout">Sign out</button>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
+    
+    [Inject] private IAccountManagement AccountManagement { get; set; } = null!;
 
     private async Task Logout()
     {
