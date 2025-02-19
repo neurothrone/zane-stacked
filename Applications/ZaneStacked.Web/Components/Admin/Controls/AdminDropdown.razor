@@ -5,7 +5,11 @@
     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
        data-bs-toggle="dropdown">
         @* <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2"> *@
-        <strong>Zane</strong>
+        <AuthorizeView>
+            <Authorized>
+                <strong>@(GetFirstCharacterUppercase(context.User.Identity?.Name ?? "Unknown"))</strong>
+            </Authorized>
+        </AuthorizeView>
     </a>
     <ul class="dropdown-menu dropdown-menu-dark">
         <li>
@@ -25,6 +29,11 @@
         {
             await AccountManagement.LogoutAsync();
         }
+    }
+
+    private string GetFirstCharacterUppercase(string input)
+    {
+        return string.IsNullOrEmpty(input) ? "Unknown" : input[..1].ToUpper();
     }
 
 }
