@@ -9,7 +9,7 @@ public class ProjectService
 
     public ProjectService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClientFactory.CreateClient("Auth");
+        _httpClient = httpClientFactory.CreateClient("Api");
     }
     
     public async Task<ProjectDto?> AddProjectAsync(ProjectDto project)

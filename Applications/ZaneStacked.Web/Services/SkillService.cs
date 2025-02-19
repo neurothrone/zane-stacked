@@ -9,7 +9,7 @@ public class SkillService
 
     public SkillService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClientFactory.CreateClient("Auth");
+        _httpClient = httpClientFactory.CreateClient("Api");
     }
 
     public async Task<SkillDto?> AddSkillAsync(SkillDto skill)

@@ -31,7 +31,7 @@ builder.Services.AddScoped(_ =>
                               throw new Exception("ClientUrl must be set in appsettings.json"))
     });
 builder.Services.AddHttpClient(
-        "Auth",
+        "Api",
         opt => opt.BaseAddress = new Uri(builder.Configuration["ApiUrl"] ??
                                          throw new Exception("ApiUrl must be set in appsettings.json"))
     )
