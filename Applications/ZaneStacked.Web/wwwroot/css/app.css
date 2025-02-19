@@ -158,16 +158,6 @@ body {
     }
 }
 
-/*code {*/
-/*    color: #c02d76;*/
-/*}*/
-
-.custom-focus:focus {
-    border-color: #6a0dad !important; /* Your client's purple */
-    box-shadow: 0 0 5px rgba(106, 13, 173, 0.75) !important; /* Purple glow */
-    outline: none !important;
-}
-
 .btn-custom {
     background-color: var(--highlight);
     border-color: var(--highlight);
@@ -178,12 +168,18 @@ body {
     transition: 0.3s ease-in-out;
 }
 
+.btn-custom:hover {
+    background-color: #481d74;
+    border-color: #481d74;
+}
+
 [data-bs-theme="light"] .btn-custom {
     background-color: #671fa5;
     border-color: #671fa5;
 }
 
-.btn-custom:hover {
-    background-color: #481d74;
-    border-color: #481d74;
+input:focus {
+    border-color: #6a0dad !important;
+    box-shadow: 0 0 5px rgba(106, 13, 173, 0.75) !important;
+    outline: none !important;
 }
