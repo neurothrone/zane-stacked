@@ -31,7 +31,7 @@ namespace ZaneStacked.Web.Identity
         /// <summary>
         /// Special auth client.
         /// </summary>
-        private readonly HttpClient httpClient = httpClientFactory.CreateClient("Auth");
+        private readonly HttpClient httpClient = httpClientFactory.CreateClient("Api");
 
         /// <summary>
         /// Authentication state.
