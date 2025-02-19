@@ -1,18 +1,20 @@
 @page "/admin"
 @layout AdminLayout
-
-@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-
-@inject NavigationManager Navigation
 
 <PageTitle>Dashboard - ZaneStacked</PageTitle>
 
-<p>Welcome, Admin! Dashboard here.</p>
-
-<button class="btn btn-danger" @onclick="Logout">Logout</button>
+<main class="container-fluid">
+    <h2 class="mb-3 mt-2">Dashboard</h2>
+    <p>Welcome, Admin! Dashboard here.</p>
+    
+    <button class="btn btn-danger" @onclick="Logout">Logout</button>
+</main>
 
 @code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = null!;
 
     private void Logout()
     {
