@@ -14,6 +14,7 @@
     overflow-y: auto;
     padding: 1rem;
     margin-top: 56px; /* Match navbar height */
+    width: 100%;
 }
 
 .navrail {
