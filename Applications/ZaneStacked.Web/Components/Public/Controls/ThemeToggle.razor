@@ -1,12 +1,14 @@
 @using ZaneStacked.Web.Services
 
-@inject ThemeService ThemeService
-
 <button class="theme-toggle" @onclick="ToggleTheme">
     <i class="@_currentIcon"></i>
 </button>
 
 @code {
+
+    [Inject]
+    private ThemeService ThemeService { get; set; } = null!;
+
     private string _currentTheme = "dark";
     private string _currentIcon = "bi bi bi-sun-fill";
 
@@ -27,4 +29,5 @@
     {
         _currentIcon = _currentTheme == "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
     }
+
 }

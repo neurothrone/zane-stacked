@@ -1,9 +1,8 @@
 @using ZaneStacked.Shared.DTOs
 @using ZaneStacked.Web.Services
-@inject ProjectService ProjectService
 
 <section class="@CssClass">
-    <SectionHeader Title="Projects" CssClass="text-center" />
+    <SectionHeader Title="Projects" CssClass="text-center"/>
     <div class="row justify-content-center">
         @if (_projects is null)
         {
@@ -27,6 +26,9 @@
 
     [Parameter]
     public string CssClass { get; set; } = string.Empty;
+
+    [Inject]
+    private ProjectService ProjectService { get; set; } = null!;
 
     private List<ProjectDto>? _projects;
 
