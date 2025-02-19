@@ -1,0 +1,26 @@
+@using ZaneStacked.Shared.DTOs
+@using ZaneStacked.Web.Services
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Random Excuse</h5>
+        <p class="card-text">@(_randomExcuse?.Text ?? "Loading...")</p>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Inject]
+    private ExcuseService ExcuseService { get; set; } = null!;
+
+    private ExcuseDto? _randomExcuse;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _randomExcuse = await ExcuseService.GetRandomExcuseAsync();
+    }
+
+}

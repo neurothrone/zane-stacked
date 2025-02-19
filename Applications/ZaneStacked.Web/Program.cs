@@ -40,5 +40,6 @@ builder.Services.AddHttpClient(
 builder.Services.AddScoped<SkillService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<ThemeService>();
+builder.Services.AddScoped<ExcuseService>();
 
 await builder.Build().RunAsync();

@@ -55,6 +55,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
+builder.Services.AddHttpClient(
+    "ExcusesApi",
+    opt => opt.BaseAddress = new Uri(builder.Configuration["ExcusesApiUrl"] ??
+                                     throw new Exception("ExcusesApiUrl must be set in appsettings.json"))
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -90,5 +96,6 @@ app.MapGet("/", () => "Welcome to ZaneStacked API!");
 app.MapAuthEndpoints();
 app.MapSkillEndpoints();
 app.MapProjectEndpoints();
+app.MapExcuseEndpoints();
 
 app.Run();
