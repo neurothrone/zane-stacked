@@ -485,9 +485,13 @@ $RECYCLE.BIN/
 
 # Ignore configuration files with sensitive data
 appsettings.json
+appsettings.Development.json
 secrets.json
 
 # SQLite database files
 *.db
 *.db-shm
 *.db-wal
+
+# Ignore scripts with sensitive data
+add-sql-firewall-rules.sh
