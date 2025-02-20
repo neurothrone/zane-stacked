@@ -52,13 +52,7 @@
     @* <input type="text" *@
     @*        class="form-control mb-3" *@
     @*        placeholder="Search skills..." *@
-    @*        @bind="searchTerm" *@
-    @*        @oninput="FilterSkills"/> *@
-
-    <input type="text"
-           class="form-control mb-3"
-           placeholder="Search skills..."
-           @bind="_searchTerm"/>
+    @*        @bind="_searchTerm"/> *@
 
     @if (_allSkills is null)
     {
@@ -101,16 +95,14 @@
 @code {
 
     [Inject]
-    private IJSRuntime JsRuntime { get; set; } = null!;
-
-    [Inject]
     private SkillService SkillService { get; set; } = null!;
 
-    // TODO: Loading spinner
     private List<SkillDto>? _allSkills;
     private InputSkill _currentSkill = new();
     private SkillDto? _selectedSkill;
-    private string _searchTerm = "";
+
+    // private string _searchTerm = "";
+
     private bool _isEditing;
     private bool _showForm;
 
@@ -151,12 +143,19 @@
     {
         if (_currentSkill.Id == 0)
         {
-            var createdSkill = await SkillService.AddSkillAsync(new SkillDto(
-                0,
-                _currentSkill.Name,
-                _currentSkill.YearsOfExperience,
-                _currentSkill.Proficiency
-            ));
+            var createdSkill = await SkillService.AddSkillAsync(
+                new InputSkillDto
+                {
+                    Name = _currentSkill.Name,
+                    YearsOfExperience = _currentSkill.YearsOfExperience,
+                    Proficiency = _currentSkill.Proficiency
+                }
+            );
+            // var createdSkill = await SkillService.AddSkillAsync(new InputSkillDto(
+            //     _currentSkill.Name,
+            //     _currentSkill.YearsOfExperience,
+            //     _currentSkill.Proficiency
+            // ));
             if (createdSkill is not null)
             {
                 _allSkills?.Insert(0, createdSkill);
@@ -164,12 +163,21 @@
         }
         else
         {
-            var updatedSkill = await SkillService.UpdateSkillAsync(new SkillDto(
+            var updatedSkill = await SkillService.UpdateSkillAsync(
                 _currentSkill.Id,
-                _currentSkill.Name,
-                _currentSkill.YearsOfExperience,
-                _currentSkill.Proficiency
-            ));
+                new InputSkillDto
+                {
+                    Name = _currentSkill.Name,
+                    YearsOfExperience = _currentSkill.YearsOfExperience,
+                    Proficiency = _currentSkill.Proficiency
+                }
+            );
+            // var updatedSkill = await SkillService.UpdateSkillAsync(new InputSkillDto(
+            //     _currentSkill.Id,
+            //     _currentSkill.Name,
+            //     _currentSkill.YearsOfExperience,
+            //     _currentSkill.Proficiency
+            // ));
             if (updatedSkill is not null)
             {
                 var index = _allSkills?.FindIndex(s => s.Id == updatedSkill.Id);
@@ -185,19 +193,15 @@
         }
 
         _currentSkill = new InputSkill();
-
-        // _isEditing = false;
-        // _selectedSkill = null;
-        // _showForm = false;
     }
 
     private void SelectSkill(SkillDto skill)
     {
         _selectedSkill = _selectedSkill?.Id == skill.Id ? null : skill;
-        
+
         if (_selectedSkill is not null)
             return;
-        
+
         _currentSkill.Id = 0;
         _isEditing = false;
     }
