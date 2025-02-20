@@ -8,7 +8,6 @@ public class Project
     public string GitHubUrl { get; set; } = string.Empty;
     public string? DemoUrl { get; set; }
     public string FeaturedImage { get; set; } = string.Empty;
-    public List<Skill> Skills { get; set; } = [];
-
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+    public List<Skill> Skills { get; set; } = [];
 }
