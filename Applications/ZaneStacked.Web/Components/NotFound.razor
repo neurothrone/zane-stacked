@@ -1,0 +1,22 @@
+@page "/not-found"
+@inject NavigationManager Navigation
+
+<PageTitle>404 - Lost in the Void</PageTitle>
+
+<div class="not-found-container">
+    <h1 class="glitch" data-text="404 ERROR">404 ERROR</h1>
+    <p class="subtitle">Congratulations, you've discovered the existential void of the internet.</p>
+    
+    <div class="scan-animation">
+        <span>Scanning for intelligent content</span>
+        <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        <br>
+        <span class="scan-result">No results found.</span>
+    </div>
+
+    <p class="suggestion">
+        Maybe try <a href="javascript:void(0);" @onclick="@(()=> Navigation.NavigateTo("/"))" 
+                     class="glitch-link">going home</a>? 
+        Or stay here and contemplate the meaning of broken links.
+    </p>
+</div>

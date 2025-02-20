@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Lexend+Deca:wght@300;400;600&display=swap");
 
+:root {
+    --neon-purple: #a200ff;
+    --neon-pink: #ff00ff;
+    --light-text: #222;
+    --dark-text: #eee;
+}
+
 body {
     font-family: "Lexend Deca", sans-serif;
 }

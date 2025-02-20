@@ -1,0 +1,79 @@
+.not-found-container {
+    text-align: center;
+    padding: 5rem;
+    font-family: "Orbitron", sans-serif;
+    transition: color 0.3s ease-in-out;
+}
+
+.glitch {
+    font-size: 4rem;
+    font-weight: bold;
+    display: inline-block;
+    color: var(--neon-purple);
+    text-shadow: 2px 2px 4px var(--neon-purple), -2px -2px 4px var(--neon-pink);
+    animation: glitch-animation 0.6s infinite alternate;
+}
+
+@keyframes glitch-animation {
+    0% {
+        text-shadow: 2px 2px 3px var(--neon-purple), -2px -2px 3px var(--neon-pink);
+    }
+    100% {
+        text-shadow: -2px -2px 3px var(--neon-purple), 2px 2px 3px var(--neon-pink);
+    }
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.scan-animation {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    font-family: monospace;
+    color: var(--neon-pink);
+    text-shadow: 0 0 6px var(--neon-pink);
+    animation: scanGlow 1.5s alternate infinite;
+}
+
+@keyframes scanGlow {
+    0% {
+        text-shadow: 0 0 4px var(--neon-pink);
+    }
+    100% {
+        text-shadow: 0 0 8px var(--neon-pink);
+    }
+}
+
+.dot {
+    animation: blink 1.5s steps(2, start) infinite;
+}
+
+.scan-result {
+    font-weight: bold;
+    color: red;
+}
+
+.suggestion {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+}
+
+.glitch-link {
+    color: var(--neon-purple);
+    text-decoration: none;
+    font-weight: bold;
+    transition: text-shadow 0.3s ease-in-out;
+}
+
+.glitch-link:hover {
+    text-shadow: 0 0 10px var(--neon-purple), 0 0 15px var(--neon-pink);
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
