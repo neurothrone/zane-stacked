@@ -1,6 +1,9 @@
 @using ZaneStacked.Web.Services
 
-<button class="theme-toggle" @onclick="ToggleTheme">
+<button class="theme-toggle"
+        aria-label="@GetThemeLabel()"
+        title="@GetThemeLabel()"
+        @onclick="ToggleTheme">
     <i class="@_currentIcon"></i>
 </button>
 
@@ -29,5 +32,7 @@
     {
         _currentIcon = _currentTheme == "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
     }
+
+    private string GetThemeLabel() => _currentTheme == "dark" ? "Switch to light mode" : "Switch to dark mode";
 
 }
