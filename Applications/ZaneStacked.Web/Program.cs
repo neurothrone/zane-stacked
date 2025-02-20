@@ -24,12 +24,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStat
 builder.Services.AddScoped(
     sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());
 
-builder.Services.AddScoped(_ =>
-    new HttpClient
-    {
-        BaseAddress = new Uri(builder.Configuration["ClientUrl"] ??
-                              throw new Exception("ClientUrl must be set in appsettings.json"))
-    });
+builder.Services.AddScoped(_ => new HttpClient
+{
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+});
 builder.Services.AddHttpClient(
         "Api",
         opt => opt.BaseAddress = new Uri(builder.Configuration["ApiUrl"] ??
