@@ -230,6 +230,9 @@ namespace ZaneStacked.Api.Persistence.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DemoUrl")
                         .HasColumnType("TEXT");
 
@@ -259,6 +262,9 @@ namespace ZaneStacked.Api.Persistence.EFCore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
