@@ -1,13 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZaneStacked.Api.Endpoints;
-using ZaneStacked.Api.Extensions;
 using ZaneStacked.Api.Persistence.EFCore.Data;
 using ZaneStacked.Api.Persistence.EFCore.Models;
 using ZaneStacked.Api.Persistence.EFCore.Repositories;
 using ZaneStacked.Api.Persistence.Shared.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 // Source: https://github.com/dotnet/blazor-samples/tree/main/8.0/BlazorWebAssemblyStandaloneWithIdentity
 
@@ -34,7 +40,7 @@ builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
     {
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("AzureConnection") ?? throw new InvalidOperationException(
-                $"Connection string 'AzureConnection' not found.")
+                "Connection string 'AzureConnection' not found.")
         );
 
 #if DEBUG
@@ -80,7 +86,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     // Apply migrations
-    await app.ApplyMigrations();
+    // await app.ApplyMigrations();
 
     // Seed the database
     await using var scope = app.Services.CreateAsyncScope();
