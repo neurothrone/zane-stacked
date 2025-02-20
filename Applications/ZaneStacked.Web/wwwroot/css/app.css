@@ -212,7 +212,8 @@ body {
     border-color: #671fa5;
 }
 
-input:focus {
+input:focus,
+textarea:focus {
     border-color: #6a0dad !important;
     box-shadow: 0 0 5px rgba(106, 13, 173, 0.75) !important;
     outline: none !important;

@@ -1,0 +1,72 @@
+@using ZaneStacked.Shared.DTOs
+
+<div class="form-group @CssClass">
+    <label class="mb-1">Skills</label>
+
+    <div class="dropdown">
+        <button class="btn btn-custom dropdown-toggle w-100"
+                type="button"
+                id="skillDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                disabled="@IsLoading">
+            @if (IsLoading)
+            {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span>Loading...</span>
+            }
+            else
+            {
+                @(SelectedSkillIds.Count == 0 ? "Select Skill(s)" : $"{SelectedSkillIds.Count} Selected")
+            }
+        </button>
+
+        <ul class="dropdown-menu w-100 custom-dropdown" aria-labelledby="skillDropdown">
+            @if (Skills is not null)
+            {
+                @foreach (var skill in Skills)
+                {
+                    <li>
+                        <label class="dropdown-item custom-dropdown-item">
+                            <input type="checkbox"
+                                   class="form-check-input me-2"
+                                   value="@skill.Id"
+                                   checked="@SelectedSkillIds.Contains(skill.Id)"
+                                   @onchange="() => ToggleSelection(skill.Id)">
+                            @skill.Name
+                        </label>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+
+    [Parameter, EditorRequired]
+    public List<int> SelectedSkillIds { get; set; } = [];
+
+    [Parameter, EditorRequired]
+    public EventCallback<List<int>> SelectedSkillIdsChanged { get; set; }
+
+    [Parameter, EditorRequired]
+    public List<SkillDto>? Skills { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; } = true;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    private async Task ToggleSelection(int skillId)
+    {
+        if (SelectedSkillIds.Contains(skillId))
+            SelectedSkillIds.Remove(skillId);
+        else
+            SelectedSkillIds.Add(skillId);
+
+        await SelectedSkillIdsChanged.InvokeAsync(SelectedSkillIds);
+    }
+
+}

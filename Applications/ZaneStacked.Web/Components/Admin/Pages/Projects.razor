@@ -53,6 +53,12 @@
                     <ValidationMessage For="() => _currentProject.FeaturedImage" class="text-danger"/>
                 </div>
 
+                <SkillSelect CssClass="mb-3"
+                             SelectedSkillIds="@_selectedSkills"
+                             SelectedSkillIdsChanged="@(skillIds => _selectedSkills = skillIds)"
+                             Skills="@_skills"
+                             IsLoading="@_isLoadingSkills"/>
+
                 <button type="submit"
                         class="btn btn-custom w-100">@(_isEditing && _selectedProject is not null ? "Update" : "Add")</button>
             </EditForm>
@@ -62,14 +68,8 @@
     <!-- Search Input -->
     @* <input type="text" *@
     @*        class="form-control mb-3" *@
-    @*        placeholder="Search skills..." *@
-    @*        @bind="searchTerm" *@
-    @*        @oninput="FilterSkills"/> *@
-
-    <input type="text"
-           class="form-control mb-3"
-           placeholder="Search projects..."
-           @bind="_searchTerm"/>
+    @*        placeholder="Search projects..." *@
+    @*        @bind="_searchTerm"/> *@
 
     @if (_allProjects is null)
     {
@@ -111,17 +111,20 @@
 @code {
 
     [Inject]
-    private IJSRuntime JsRuntime { get; set; } = null!;
-
-    [Inject]
     private ProjectService ProjectService { get; set; } = null!;
 
-    // TODO: Multiple select, SelectInput for Skills
-    // TODO: Loading spinner
+    [Inject]
+    private SkillService SkillService { get; set; } = null!;
+
     private List<ProjectDto>? _allProjects;
     private InputProject _currentProject = new();
     private ProjectDto? _selectedProject;
-    private string _searchTerm = "";
+
+    private List<SkillDto> _skills = [];
+    private List<int> _selectedSkills = [];
+    private bool _isLoadingSkills = true;
+
+    // private string _searchTerm = "";
     private bool _isEditing;
     private bool _showForm;
 
@@ -129,6 +132,8 @@
     {
         // await Task.Delay(TimeSpan.FromSeconds(2));
         _allProjects = await ProjectService.GetProjectsAsync();
+        _skills = await SkillService.GetSkillsAsync();
+        _isLoadingSkills = false;
     }
 
     private void ToggleEditForm()
@@ -145,15 +150,18 @@
     {
         if (_currentProject.Id == 0)
         {
-            var createdProject = await ProjectService.AddProjectAsync(new ProjectDto(
-                0,
-                _currentProject.Name,
-                _currentProject.Description,
-                _currentProject.GitHubUrl,
-                _currentProject.DemoUrl,
-                _currentProject.FeaturedImage,
-                []
-            ));
+            var createdProject = await ProjectService.AddProjectAsync(
+                new InputProjectDto
+                {
+                    Name = _currentProject.Name,
+                    Description = _currentProject.Description,
+                    GitHubUrl = _currentProject.GitHubUrl,
+                    DemoUrl = _currentProject.DemoUrl,
+                    FeaturedImage = _currentProject.FeaturedImage,
+                    SkillIds = _selectedSkills
+                }
+            );
+
             if (createdProject is not null)
             {
                 _allProjects?.Insert(0, createdProject);
@@ -161,21 +169,26 @@
         }
         else
         {
-            var updatedSkill = await ProjectService.UpdateProjectAsync(new ProjectDto(
+            var updatedProject = await ProjectService.UpdateProjectAsync(
                 _currentProject.Id,
-                _currentProject.Name,
-                _currentProject.Description,
-                _currentProject.GitHubUrl,
-                _currentProject.DemoUrl,
-                _currentProject.FeaturedImage,
-                []
-            ));
-            if (updatedSkill is not null)
+                new InputProjectDto
+                {
+                    Name = _currentProject.Name,
+                    Description = _currentProject.Description,
+                    GitHubUrl = _currentProject.GitHubUrl,
+                    DemoUrl = _currentProject.DemoUrl,
+                    FeaturedImage = _currentProject.FeaturedImage,
+                    SkillIds = _selectedSkills,
+                    CreatedDate = _currentProject.CreatedDate
+                }
+            );
+
+            if (updatedProject is not null)
             {
-                var index = _allProjects?.FindIndex(s => s.Id == updatedSkill.Id);
+                var index = _allProjects?.FindIndex(s => s.Id == updatedProject.Id);
                 if (index is not null && index != -1 && _allProjects is not null)
                 {
-                    _allProjects[index.Value] = updatedSkill;
+                    _allProjects[index.Value] = updatedProject;
                 }
             }
 
@@ -192,7 +205,7 @@
         _selectedProject = _selectedProject?.Id == project.Id ? null : project;
         if (_selectedProject is not null)
             return;
-        
+
         _currentProject.Id = 0;
         _isEditing = false;
     }
@@ -212,8 +225,11 @@
             Description = _selectedProject.Description,
             GitHubUrl = _selectedProject.GitHubUrl,
             DemoUrl = _selectedProject.DemoUrl,
-            FeaturedImage = _selectedProject.FeaturedImage
+            FeaturedImage = _selectedProject.FeaturedImage,
+            CreatedDate = _selectedProject.CreatedDate
         };
+
+        _selectedSkills = _selectedProject.Skills.Select(s => s.Id).ToList();
     }
 
     private async Task DeleteProject()
@@ -251,6 +267,8 @@
         [Required]
         [MinLength(1)]
         public string FeaturedImage { get; set; } = string.Empty;
+
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 
 }

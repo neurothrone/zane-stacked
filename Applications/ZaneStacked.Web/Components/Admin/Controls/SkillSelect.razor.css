@@ -1,0 +1,28 @@
+.custom-dropdown {
+    background-color: #181A1B;
+    border: 1px solid var(--highlight);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(103, 31, 165, 0.4);
+    transition: 0.2s ease-in-out;
+}
+
+.custom-dropdown-item {
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    transition: background 0.3s ease-in-out;
+}
+
+.custom-dropdown-item:hover {
+    background-color: #481d74;
+    color: white;
+}
+
+.custom-dropdown-item input[type="checkbox"] {
+    accent-color: var(--highlight);
+}
+
+.custom-dropdown-item input[type="checkbox"]:checked {
+    background-color: #671fa5;
+    border-color: #671fa5;
+}
