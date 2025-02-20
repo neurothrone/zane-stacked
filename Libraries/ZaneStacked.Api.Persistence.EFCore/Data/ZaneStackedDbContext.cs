@@ -18,8 +18,14 @@ public class ZaneStackedDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.HasDefaultSchema("ZaneStackedSchema");
+
         modelBuilder.Entity<Skill>()
+            .ToTable("Skills", schema: "ZaneStackedSchema")
             .HasMany(s => s.Projects)
             .WithMany(p => p.Skills);
+
+        modelBuilder.Entity<Project>()
+            .ToTable("Projects", schema: "ZaneStackedSchema");
     }
 }
