@@ -1,4 +1,3 @@
-using ZaneStacked.Api.DTOs.Skill;
 using ZaneStacked.Api.Persistence.Shared.Models;
 using ZaneStacked.Shared.DTOs;
 
@@ -12,8 +11,21 @@ public static class SkillExtensions
             skill.Id,
             skill.Name,
             skill.YearsOfExperience,
-            skill.Proficiency
+            skill.Proficiency,
+            skill.CreatedDate
         );
+    }
+
+    public static Skill ToModel(this SkillDto dto, int id = 0)
+    {
+        return new Skill
+        {
+            Id = id,
+            Name = dto.Name,
+            YearsOfExperience = dto.YearsOfExperience,
+            Proficiency = dto.Proficiency,
+            CreatedDate = dto.CreatedDate
+        };
     }
 
     public static Skill ToModel(this InputSkillDto dto, int id = 0)

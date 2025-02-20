@@ -1,6 +1,6 @@
-using ZaneStacked.Api.DTOs.Project;
 using ZaneStacked.Api.Persistence.Shared.Interfaces;
 using ZaneStacked.Api.Utils;
+using ZaneStacked.Shared.DTOs;
 
 namespace ZaneStacked.Api.Endpoints;
 
@@ -13,7 +13,7 @@ public static class ProjectEndpoints
 
         group.MapPost("/", async (InputProjectDto project, IProjectRepository repo) =>
         {
-            var createdProject = await repo.AddAsync(project.ToModel());
+            var createdProject = await repo.AddAsync(project.ToModel(), project.SkillIds.ToArray());
             return Results.Created($"/api/projects/{createdProject.Id}", createdProject.ToDto());
         }).RequireAuthorization();
 
@@ -26,14 +26,14 @@ public static class ProjectEndpoints
         group.MapGet("/{id:int:min(0)}", async (int id, IProjectRepository repo) =>
         {
             var project = await repo.GetByIdAsync(id);
-            return project == null ? Results.NotFound() : Results.Ok(project.ToDto());
+            return project is null ? Results.NotFound() : Results.Ok(project.ToDto());
         });
 
 
         group.MapPut("/{id:int:min(0)}", async (int id, InputProjectDto project, IProjectRepository repo) =>
         {
-            var updatedProject = await repo.UpdateAsync(project.ToModel(id: id));
-            return updatedProject != null ? Results.Ok(updatedProject) : Results.NotFound();
+            var updatedProject = await repo.UpdateAsync(project.ToModel(id: id), project.SkillIds.ToArray());
+            return updatedProject is not null ? Results.Ok(updatedProject.ToDto()) : Results.NotFound();
         }).RequireAuthorization();
 
         group.MapDelete("/{id:int:min(0)}", async (int id, IProjectRepository repo) =>

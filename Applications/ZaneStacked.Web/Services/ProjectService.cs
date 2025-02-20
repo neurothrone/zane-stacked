@@ -11,8 +11,8 @@ public class ProjectService
     {
         _httpClient = httpClientFactory.CreateClient("Api");
     }
-    
-    public async Task<ProjectDto?> AddProjectAsync(ProjectDto project)
+
+    public async Task<ProjectDto?> AddProjectAsync(InputProjectDto project)
     {
         var response = await _httpClient.PostAsJsonAsync("api/projects", project);
         return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<ProjectDto>() : null;
@@ -22,13 +22,13 @@ public class ProjectService
     {
         return await _httpClient.GetFromJsonAsync<List<ProjectDto>>("api/projects") ?? [];
     }
-    
-    public async Task<ProjectDto?> UpdateProjectAsync(ProjectDto project)
+
+    public async Task<ProjectDto?> UpdateProjectAsync(int id, InputProjectDto project)
     {
-        var response = await _httpClient.PutAsJsonAsync($"api/projects/{project.Id}", project);
+        var response = await _httpClient.PutAsJsonAsync($"api/projects/{id}", project);
         return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<ProjectDto>() : null;
     }
-    
+
     public async Task<bool> DeleteProjectAsync(int projectId)
     {
         var response = await _httpClient.DeleteAsync($"api/projects/{projectId}");

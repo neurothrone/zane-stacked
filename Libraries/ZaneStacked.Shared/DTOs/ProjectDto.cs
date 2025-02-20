@@ -7,5 +7,6 @@ public record ProjectDto(
     string GitHubUrl,
     string? DemoUrl,
     string FeaturedImage,
-    List<SkillDto> Skills
+    List<SkillDto> Skills,
+    DateTime CreatedDate
 );

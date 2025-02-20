@@ -1,4 +1,3 @@
-using ZaneStacked.Api.DTOs.Project;
 using ZaneStacked.Api.Persistence.Shared.Models;
 using ZaneStacked.Shared.DTOs;
 
@@ -15,7 +14,8 @@ public static class ProjectExtensions
             project.GitHubUrl,
             project.DemoUrl,
             project.FeaturedImage,
-            project.Skills.Select(skill => skill.ToDto()).ToList()
+            project.Skills.Select(skill => skill.ToDto()).ToList(),
+            project.CreatedDate
         );
     }
 
@@ -28,7 +28,8 @@ public static class ProjectExtensions
             Description = dto.Description,
             GitHubUrl = dto.GitHubUrl,
             DemoUrl = dto.DemoUrl,
-            FeaturedImage = dto.FeaturedImage
+            FeaturedImage = dto.FeaturedImage,
+            CreatedDate = dto.CreatedDate ?? DateTime.UtcNow
         };
     }
 }

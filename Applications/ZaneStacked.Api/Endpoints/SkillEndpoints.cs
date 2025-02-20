@@ -1,6 +1,6 @@
-using ZaneStacked.Api.DTOs.Skill;
 using ZaneStacked.Api.Persistence.Shared.Interfaces;
 using ZaneStacked.Api.Utils;
+using ZaneStacked.Shared.DTOs;
 
 namespace ZaneStacked.Api.Endpoints;
 
@@ -26,13 +26,13 @@ public static class SkillEndpoints
         group.MapGet("/{id:int:min(0)}", async (int id, ISkillRepository repo) =>
         {
             var skill = await repo.GetByIdAsync(id);
-            return skill == null ? Results.NotFound() : Results.Ok(skill.ToDto());
+            return skill is null ? Results.NotFound() : Results.Ok(skill.ToDto());
         });
 
         group.MapPut("/{id:int:min(0)}", async (int id, InputSkillDto skill, ISkillRepository repo) =>
         {
             var updatedSkill = await repo.UpdateAsync(skill.ToModel(id: id));
-            return updatedSkill != null ? Results.Ok(updatedSkill) : Results.NotFound();
+            return updatedSkill is not null ? Results.Ok(updatedSkill.ToDto()) : Results.NotFound();
         }).RequireAuthorization();
 
         group.MapDelete("/{id:int:min(0)}", async (int id, ISkillRepository repo) =>

@@ -4,5 +4,6 @@ public record SkillDto(
     int Id,
     string Name,
     int YearsOfExperience,
-    string Proficiency
+    string Proficiency,
+    DateTime CreatedDate
 );

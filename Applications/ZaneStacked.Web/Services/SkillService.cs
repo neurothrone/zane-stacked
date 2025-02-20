@@ -12,7 +12,7 @@ public class SkillService
         _httpClient = httpClientFactory.CreateClient("Api");
     }
 
-    public async Task<SkillDto?> AddSkillAsync(SkillDto skill)
+    public async Task<SkillDto?> AddSkillAsync(InputSkillDto skill)
     {
         var response = await _httpClient.PostAsJsonAsync("api/skills", skill);
         return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<SkillDto>() : null;
@@ -23,9 +23,9 @@ public class SkillService
         return await _httpClient.GetFromJsonAsync<List<SkillDto>>("api/skills") ?? [];
     }
 
-    public async Task<SkillDto?> UpdateSkillAsync(SkillDto skill)
+    public async Task<SkillDto?> UpdateSkillAsync(int id, InputSkillDto skill)
     {
-        var response = await _httpClient.PutAsJsonAsync($"api/skills/{skill.Id}", skill);
+        var response = await _httpClient.PutAsJsonAsync($"api/skills/{id}", skill);
         return response.IsSuccessStatusCode ? await response.Content.ReadFromJsonAsync<SkillDto>() : null;
     }
 
