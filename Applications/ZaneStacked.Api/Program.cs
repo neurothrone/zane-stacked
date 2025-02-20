@@ -19,8 +19,8 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
 builder.Services.AddAuthorizationBuilder();
 
 // Database Configuration
-builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
-    options.UseSqlite("Data Source=zane-stacked.db"));
+// builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
+//     options.UseSqlite("Data Source=zane-stacked.db"));
 
 // builder.Services.AddDbContext<ZaneStackedDbContext>(
 //     options =>
@@ -29,6 +29,19 @@ builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
 //         //For debugging only: options.EnableDetailedErrors(true);
 //         //For debugging only: options.EnableSensitiveDataLogging(true);
 //     });
+
+builder.Services.AddDbContext<ZaneStackedDbContext>(options =>
+    {
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("AzureConnection") ?? throw new InvalidOperationException(
+                $"Connection string 'AzureConnection' not found.")
+        );
+
+#if DEBUG
+        options.EnableSensitiveDataLogging();
+#endif
+    }
+);
 
 builder.Services.AddIdentityCore<AppUser>()
     .AddRoles<IdentityRole>()
@@ -73,9 +86,13 @@ if (app.Environment.IsDevelopment())
     await using var scope = app.Services.CreateAsyncScope();
     await DbInitializer.InitializeAsync(scope.ServiceProvider);
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // app.UseSwagger();
+    // app.UseSwaggerUI();
 }
+
+// NOTE: For testing purposes. Remove in production.
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Create routes for the identity endpoints
 app.MapIdentityApi<AppUser>();
