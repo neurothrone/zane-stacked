@@ -484,8 +484,8 @@ $RECYCLE.BIN/
 *.swp
 
 # Ignore configuration files with sensitive data
-appsettings.json
-appsettings.Development.json
+Applications/ZaneStacked.Api/appsettings.json
+Applications/ZaneStacked.Api/appsettings.Development.json
 secrets.json
 
 # SQLite database files
