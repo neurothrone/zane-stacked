@@ -213,6 +213,12 @@ body {
     border-color: #671fa5;
 }
 
+[data-bs-theme="light"] .btn-custom:hover {
+    background-color: #481d74;
+    border-color: #481d74;
+    color: white;
+}
+
 input:focus,
 textarea:focus {
     border-color: #6a0dad !important;
