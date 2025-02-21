@@ -1,0 +1,32 @@
+<div class="action-panel text-bg-dark border-top">
+    <button class="btn btn-custom"
+            disabled="@IsLoading"
+            @onclick="OnEdit">Edit
+    </button>
+    @* <button class="btn btn-danger" *@
+    @*         disabled="@IsLoading" *@
+    @*         @onclick="OnDelete">Delete *@
+    @* </button> *@
+    <LoadingButton
+        ButtonClass="btn-danger"
+        Text="Delete"
+        IsLoading="@IsDeleting"
+        Disabled="@IsLoading"
+        OnClick="OnDelete"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+    
+    [Parameter]
+    public bool IsDeleting { get; set; }
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+}
