@@ -91,10 +91,10 @@
 <!-- Action Panel -->
 @if (_selectedSkill is not null)
 {
-    <ActionPanel 
-        IsLoading="_isLoading" 
+    <ActionPanel
+        IsLoading="_isLoading"
         IsDeleting="_isDeleting"
-        OnEdit="EditSkill" 
+        OnEdit="EditSkill"
         OnDelete="DeleteSkill"/>
 }
 
@@ -103,6 +103,9 @@
 
     [Inject]
     private SkillService SkillService { get; set; } = null!;
+    
+    [Inject]
+    private ToastService ToastService { get; set; } = null!;
 
     private List<SkillDto>? _allSkills;
     private InputSkill _currentSkill = new();
@@ -121,9 +124,9 @@
     protected override async Task OnInitializedAsync()
     {
         _isLoading = true;
-        
+
         _allSkills = await SkillService.GetSkillsAsync();
-        
+
         _isLoading = false;
     }
 
@@ -140,7 +143,7 @@
     private async Task SaveSkill()
     {
         _isLoading = true;
-        
+
         if (_currentSkill.Id == 0)
         {
             var createdSkill = await SkillService.AddSkillAsync(
@@ -152,7 +155,14 @@
                 }
             );
             if (createdSkill is not null)
+            {
                 _allSkills?.Insert(0, createdSkill);
+                await ToastService.ShowToastAsync(ToastType.Success);
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(ToastType.Error);
+            }
         }
         else
         {
@@ -171,7 +181,16 @@
                 if (index is not null && index != -1 && _allSkills is not null)
                 {
                     _allSkills[index.Value] = updatedSkill;
+                    await ToastService.ShowToastAsync(ToastType.Success);
                 }
+                else
+                {
+                    await ToastService.ShowToastAsync(ToastType.Error);
+                }
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(ToastType.Warning);
             }
 
             _isEditing = false;
@@ -210,8 +229,11 @@
     private async Task DeleteSkill()
     {
         if (_selectedSkill is null)
+        {
+            await ToastService.ShowToastAsync(ToastType.Warning);
             return;
-        
+        }
+
         _isLoading = true;
         _isDeleting = true;
 
@@ -219,12 +241,17 @@
         if (deleted)
         {
             _allSkills?.Remove(_selectedSkill);
+            await ToastService.ShowToastAsync(ToastType.Success);
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(ToastType.Error);
         }
 
         _selectedSkill = null;
         _isLoading = false;
         _isDeleting = false;
-        
+
         ResetCurrentSkill();
     }
 

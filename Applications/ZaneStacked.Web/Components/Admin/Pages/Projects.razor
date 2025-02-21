@@ -151,6 +151,9 @@
     [Inject]
     private SkillService SkillService { get; set; } = null!;
 
+    [Inject]
+    private ToastService ToastService { get; set; } = null!;
+
     private List<ProjectDto>? _allProjects;
     private InputProject _currentProject = new();
     private ProjectDto? _selectedProject;
@@ -209,7 +212,14 @@
                 }
             );
             if (createdProject is not null)
+            {
                 _allProjects?.Insert(0, createdProject);
+                await ToastService.ShowToastAsync(ToastType.Success);
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(ToastType.Error);
+            }
         }
         else
         {
@@ -233,7 +243,16 @@
                 if (index is not null && index != -1 && _allProjects is not null)
                 {
                     _allProjects[index.Value] = updatedProject;
+                    await ToastService.ShowToastAsync(ToastType.Success);
                 }
+                else
+                {
+                    await ToastService.ShowToastAsync(ToastType.Error);
+                }
+            }
+            else
+            {
+                await ToastService.ShowToastAsync(ToastType.Warning);
             }
 
             _isEditing = false;
@@ -277,7 +296,10 @@
     private async Task DeleteProject()
     {
         if (_selectedProject is null)
+        {
+            await ToastService.ShowToastAsync(ToastType.Warning);
             return;
+        }
 
         _isLoading = true;
         _isDeleting = true;
@@ -286,6 +308,11 @@
         if (deleted)
         {
             _allProjects?.Remove(_selectedProject);
+            await ToastService.ShowToastAsync(ToastType.Success);
+        }
+        else
+        {
+            await ToastService.ShowToastAsync(ToastType.Error);
         }
 
         _selectedProject = null;
