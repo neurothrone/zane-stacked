@@ -1,0 +1,25 @@
+.project-description {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 50px;
+}
+
+.project-icon {
+    color: var(--secondary-purple);
+    font-size: 1.2rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.project-badge {
+    background-color: rgba(182, 139, 255, 0.2);
+    color: var(--secondary-purple);
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    gap: 4px;
+    min-width: 42px;
+}

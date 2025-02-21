@@ -78,7 +78,7 @@
                         class="list-group-item list-group-item-action @(_selectedSkill?.Id == skill.Id ? "active" : "")"
                         @onclick="() => SelectSkill(skill)">
                     <div class="d-flex justify-content-between">
-                        <span>@skill.Name</span>
+                        <span class="fw-bold">@skill.Name</span>
                         <span>@skill.YearsOfExperience yrs</span>
                     </div>
                     <small class="text-muted">@skill.Proficiency</small>

@@ -90,16 +90,43 @@
     {
         <!-- Project List -->
         <div class="list-group">
-            <Virtualize Items="_allProjects" ItemSize="50" Context="project">
+            <Virtualize Items="_allProjects" ItemSize="60" Context="project">
                 <button @key="project.Id"
                         class="list-group-item list-group-item-action @(_selectedProject?.Id == project.Id ? "active" : "")"
                         @onclick="() => SelectProject(project)">
-                    <div class="d-flex justify-content-between">
-                        <span>@project.Name</span>
-                        @* TODO: Add icons for each non-empty link, and if has featured image? *@
-                        <span>TODO</span>
+                    <div class="d-flex flex-column">
+                        <div class="fw-bold"><span>@project.Name</span></div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div class="d-flex align-items-center gap-3">
+                                @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                                {
+                                    <span title="GitHub">
+                                        <i class="bi bi-github project-icon"></i>
+                                    </span>
+                                }
+                                @if (!string.IsNullOrEmpty(project.DemoUrl))
+                                {
+                                    <span title="Live Demo">
+                                        <i class="bi bi-play-circle project-icon"></i>
+                                    </span>
+                                }
+                                @if (!string.IsNullOrEmpty(project.FeaturedImage))
+                                {
+                                    <i class="bi bi-image project-icon" title="Has Featured Image"></i>
+                                }
+                            </div>
+
+                            @if (project.Skills.Count > 0)
+                            {
+                                <span class="project-badge">
+                                    <i class="bi bi-lightbulb"></i> @(project.Skills.Count > 9 ? "9+" : project.Skills.Count.ToString())
+                                </span>
+                            }
+                        </div>
+
+                        <small class="text-muted project-description">@project.Description</small>
                     </div>
-                    <small class="text-muted">@project.Description</small>
                 </button>
             </Virtualize>
         </div>
@@ -146,7 +173,7 @@
     {
         _isLoading = true;
         _isLoadingSkills = true;
-        
+
         _allProjects = await ProjectService.GetProjectsAsync();
         _skills = await SkillService.GetSkillsAsync();
 
@@ -167,7 +194,7 @@
     private async Task SaveProject()
     {
         _isLoading = true;
-        
+
         if (_currentProject.Id == 0)
         {
             var createdProject = await ProjectService.AddProjectAsync(
@@ -254,7 +281,7 @@
 
         _isLoading = true;
         _isDeleting = true;
-        
+
         var deleted = await ProjectService.DeleteProjectAsync(_selectedProject.Id);
         if (deleted)
         {

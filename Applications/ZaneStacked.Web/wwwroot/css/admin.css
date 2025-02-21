@@ -84,3 +84,8 @@
 .list-group {
     padding-bottom: 70px;
 }
+
+.list-group-item.active {
+    background-color: #5a0e99 !important;
+    border-color: var(--secondary-purple) !important;
+}
