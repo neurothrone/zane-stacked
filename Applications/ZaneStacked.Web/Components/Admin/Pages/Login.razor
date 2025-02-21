@@ -5,9 +5,6 @@
 @using ZaneStacked.Web.Identity
 @using ZaneStacked.Web.Identity.Models
 
-@inject IAccountManagement AccountManagement
-@inject NavigationManager Navigation
-
 <PageTitle>Login - ZaneStacked</PageTitle>
 
 <AuthorizeView>
@@ -59,9 +56,12 @@
                             <ValidationMessage For="() => Input.Password" class="text-danger"/>
                         </div>
 
-                        <button type="submit" class="w-100 btn btn-custom">
-                            Log in
-                        </button>
+                        <LoadingButton
+                            ButtonClass="btn-custom w-100"
+                            Type="submit"
+                            Text="Log in"
+                            IsLoading="_isLoading"
+                            Disabled="@IsButtonDisabled"/>
                     </EditForm>
                 </div>
             </div>
@@ -71,22 +71,34 @@
 
 @code {
 
-    private FormResult _formResult = new();
-
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
 
+    [Inject]
+    private IAccountManagement AccountManagement { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = null!;
+
+    private FormResult _formResult = new();
+
+    private bool _isLoading;
+
+    private bool IsButtonDisabled => _isLoading;
+
     public async Task LoginUserAsync()
     {
-        _formResult = await AccountManagement.LoginAsync(Input.Email, Input.Password);
+        _formResult = new FormResult();
+        _isLoading = true;
 
+        _formResult = await AccountManagement.LoginAsync(Input.Email, Input.Password);
         if (_formResult.Succeeded && !string.IsNullOrEmpty(ReturnUrl))
-        {
             Navigation.NavigateTo(ReturnUrl);
-        }
+
+        _isLoading = false;
     }
 
     private void NavigateToAdmin()
