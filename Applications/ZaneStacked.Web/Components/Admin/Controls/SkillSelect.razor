@@ -9,7 +9,7 @@
                 id="skillDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                disabled="@IsLoading">
+                disabled="@(IsLoading || IsDisabled)">
             @if (IsLoading)
             {
                 <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -55,6 +55,9 @@
 
     [Parameter]
     public bool IsLoading { get; set; } = true;
+    
+    [Parameter]
+    public bool IsDisabled { get; set; } = true;
 
     [Parameter]
     public string CssClass { get; set; } = string.Empty;
