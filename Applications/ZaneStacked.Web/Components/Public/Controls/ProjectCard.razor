@@ -1,10 +1,7 @@
 @using ZaneStacked.Shared.DTOs
-@* <a href="https://github.com/neurothrone" target="_blank" class="btn btn-custom btn-github mx-3"> *@
-@*     <i class="bi bi-github"></i> GitHub *@
-@* </a> *@
 
 <div class="card project-card h-100">
-    <img src="https://picsum.photos/200" class="card-img-top" alt="@Project.Name">
+    <img src="@Project.FeaturedImage" class="card-img-top" alt="@Project.Name">
     <div class="card-body d-flex flex-column">
         <h4 class="card-title">@Project.Name</h4>
         <p class="card-text flex-grow-1">@Project.Description</p>
