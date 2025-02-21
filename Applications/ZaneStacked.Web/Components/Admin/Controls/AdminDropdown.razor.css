@@ -1,0 +1,9 @@
+.dropdown-menu-dark.show {
+    border: 2px solid var(--primary-purple);
+}
+
+.dropdown-menu-dark .dropdown-item:hover:not(.disabled),
+.dropdown-menu-dark .dropdown-item:focus:not(.disabled) {
+    background-color: #343a40;
+    color: #fff;
+}
