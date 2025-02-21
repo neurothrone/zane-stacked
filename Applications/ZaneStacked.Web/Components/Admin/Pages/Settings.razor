@@ -2,7 +2,7 @@
 @layout AdminLayout
 @attribute [Authorize(Roles = "Admin")]
 
-@using ZaneStacked.Web.Identity
+@using ZaneStacked.Web.Services
 
 <PageTitle>Settings - ZaneStacked</PageTitle>
 
@@ -13,28 +13,45 @@
         Text="Delete the Universe"
         IsLoading="@_isLoading"
         Disabled="@IsButtonDisabled"
-        OnClick="Logout"/>
+        OnClick="RegretThisDecision"/>
+
+    @if (_showAlert)
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            The Universe has been deleted. I hope you're happy.
+        </div>
+    }
 </main>
 
 @code {
 
     [Inject]
-    private IAccountManagement AccountManagement { get; set; } = null!;
+    private NavigationManager Navigation { get; set; } = null!;
+
+    [Inject]
+    private ToastService ToastService { get; set; } = null!;
 
     private bool _isLoading;
 
-    private bool IsButtonDisabled => _isLoading;
+    private bool IsButtonDisabled => _isLoading || _showAlert;
 
-    private async Task Logout()
+    private bool _showAlert;
+
+    private async Task RegretThisDecision()
     {
         _isLoading = true;
         await Task.Delay(TimeSpan.FromSeconds(2));
-        _isLoading = false;
 
-        // if (await AccountManagement.CheckAuthenticatedAsync())
-        // {
-        //     await AccountManagement.LogoutAsync();
-        // }
+        _showAlert = true;
+        StateHasChanged();
+
+        _isLoading = false;
+        await Task.Delay(TimeSpan.FromSeconds(3));
+
+        await ToastService.ShowToastAsync(ToastType.Warning);
+        await Task.Delay(TimeSpan.FromSeconds(3));
+
+        Navigation.NavigateTo("/cosmic-regret");
     }
 
 }
