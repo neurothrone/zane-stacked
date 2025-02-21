@@ -21,6 +21,13 @@ builder.Services.AddLogging(logging =>
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensures it works over HTTPS
+    options.Cookie.SameSite = SameSiteMode.None; // Important for cross-origin auth
+});
+
 // Configure authorization
 builder.Services.AddAuthorizationBuilder();
 

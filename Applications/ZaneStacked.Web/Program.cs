@@ -24,9 +24,17 @@ builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStat
 builder.Services.AddScoped(
     sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());
 
-builder.Services.AddScoped(_ => new HttpClient
+// builder.Services.AddScoped(_ => new HttpClient
+// {
+//     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+// });
+builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
+    DefaultRequestHeaders =
+    {
+        { "Accept", "application/json" }
+    }
 });
 builder.Services.AddHttpClient(
         "Api",
