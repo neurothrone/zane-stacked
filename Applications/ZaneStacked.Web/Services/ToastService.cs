@@ -22,10 +22,35 @@ public class ToastService
     {
         var titles = new Dictionary<ToastType, List<string>>
         {
-            { ToastType.Success, ["Success!", "You Did It!", "Against All Odds..."] },
-            { ToastType.Warning, ["Uh-oh...", "You Done It Now", "Not Ideal..."] },
             {
-                ToastType.Error, ["Catastrophic Failure", "Reality Has Collapsed", "This Was Avoidable"]
+                ToastType.Success,
+                [
+                    "Success!",
+                    "You Did It!",
+                    "Against All Odds...",
+                    "Victory is Yours!",
+                    "Barely Made It!"
+                ]
+            },
+            {
+                ToastType.Warning,
+                [
+                    "Uh-oh...",
+                    "You Done It Now",
+                    "Not Ideal...",
+                    "Proceed with Caution",
+                    "Reconsider Your Choices"
+                ]
+            },
+            {
+                ToastType.Error,
+                [
+                    "Catastrophic Failure",
+                    "Reality Has Collapsed",
+                    "This Was Avoidable",
+                    "The End is Near",
+                    "It's All Gone Wrong"
+                ]
             }
         };
 
@@ -33,20 +58,34 @@ public class ToastService
         {
             {
                 ToastType.Success,
-                ["Somehow, it worked.", "The universe smiles upon you.", "That was not supposed to happen, but okay."]
+                [
+                    "Somehow, it worked.",
+                    "The universe smiles upon you.",
+                    "That was not supposed to happen, but okay.",
+                    "You cheated death... this time.",
+                    "No one thought it would work, yet here we are."
+                ]
             },
+
             {
                 ToastType.Warning,
                 [
-                    "Do you have a backup plan?", "Congratulations, you've voided the warranty.",
-                    "Hope you weren't attached to that data."
+                    "Do you have a backup plan?",
+                    "Congratulations, you've voided the warranty.",
+                    "Hope you weren't attached to that data.",
+                    "This might come back to haunt you.",
+                    "Your future self is screaming right now."
                 ]
             },
+
             {
                 ToastType.Error,
                 [
-                    "Rollback failed. Panic accordingly.", "All known logic has been defied.",
-                    "The system is now self-aware. Good luck."
+                    "Rollback failed. Panic accordingly.",
+                    "All known logic has been defied.",
+                    "The system is now self-aware. Good luck.",
+                    "This is the part where we pretend nothing happened.",
+                    "Have you tried turning reality off and on again?"
                 ]
             }
         };
