@@ -14,17 +14,16 @@
 
     <RandomExcuse/>
 
-    @* <button class="btn btn-danger" @onclick="Logout">Logout</button> *@
+    <button class="btn btn-danger mt-3"
+            @onclick="ThrowException">Throw an Exception to show Blazor Error UI
+    </button>
 </main>
 
 @code {
 
-    [Inject]
-    private NavigationManager Navigation { get; set; } = null!;
-
-    private void Logout()
+    private void ThrowException()
     {
-        Navigation.NavigateTo("/logout");
+        throw new Exception("This is a test exception to show the Blazor error UI.");
     }
 
 }
