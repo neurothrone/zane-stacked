@@ -1,0 +1,37 @@
+<ul class="@NavClass">
+    @foreach (var item in _navigationItems)
+    {
+        <li class="@ItemClass">
+            <NavLink href="@item.Href" Match="item.Match" class="nav-link text-white" ActiveClass="active">
+                <i class="bi @item.Icon me-2"></i>
+                @if (!IsCompact)
+                {
+                    @item.Name
+                }
+            </NavLink>
+        </li>
+    }
+</ul>
+
+@code {
+
+    [Parameter]
+    public string NavClass { get; set; } = "nav flex-column mb-auto px-3";
+
+    [Parameter]
+    public string ItemClass { get; set; } = "";
+
+    [Parameter]
+    public bool IsCompact { get; set; }
+
+    private readonly List<NavigationItem> _navigationItems =
+    [
+        new("Dashboard", "/admin", "bi-speedometer2", NavLinkMatch.All),
+        new("Skills", "/admin/skills", "bi-lightbulb"),
+        new("Projects", "/admin/projects", "bi-folder"),
+        new("Settings", "/admin/settings", "bi-gear")
+    ];
+
+    private record NavigationItem(string Name, string Href, string Icon, NavLinkMatch Match = NavLinkMatch.Prefix);
+
+}
