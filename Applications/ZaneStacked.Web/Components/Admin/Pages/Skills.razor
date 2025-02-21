@@ -62,7 +62,7 @@
 
     @if (_allSkills is null)
     {
-        <p>Loading...</p>
+        <LoadingIndicator/>
     }
     else if (_allSkills.Count == 0)
     {
@@ -103,7 +103,7 @@
 
     [Inject]
     private SkillService SkillService { get; set; } = null!;
-    
+
     [Inject]
     private ToastService ToastService { get; set; } = null!;
 

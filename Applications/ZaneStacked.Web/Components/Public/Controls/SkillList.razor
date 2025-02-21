@@ -6,23 +6,16 @@
     <div class="row justify-content-center">
         @if (_skills is null)
         {
-            <p class="text-center mt-4">Loading skills...</p>
+            <LoadingIndicator/>
         }
         else
         {
             <div class="row row-cols-2 row-cols-md-4 g-4">
-                @if (_skills is null)
+                @foreach (var skill in _skills)
                 {
-                    <p>Loading skills...</p>
-                }
-                else
-                {
-                    @foreach (var skill in _skills)
-                    {
-                        <div class="col">
-                            <SkillCard Skill="skill"/>
-                        </div>
-                    }
+                    <div class="col">
+                        <SkillCard Skill="skill"/>
+                    </div>
                 }
             </div>
         }
