@@ -1,10 +1,19 @@
 @using ZaneStacked.Shared.DTOs
 @using ZaneStacked.Web.Services
 
-<div class="card">
+<div class="card @CssClass">
+    <div class="card-header d-flex align-items-center custom-header">
+        <h5 class="pt-2">Random Excuse</h5>
+    </div>
     <div class="card-body">
-        <h5 class="card-title">Random Excuse</h5>
-        <p class="card-text">@(_randomExcuse?.Text ?? "Loading...")</p>
+        @if (_randomExcuse is null)
+        {
+            <div class="loading-pulse"></div>
+        }
+        else
+        {
+            <p class="card-text custom-text">@_randomExcuse.Text</p>
+        }
     </div>
 </div>
 
@@ -20,6 +29,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(TimeSpan.FromSeconds(2));
         _randomExcuse = await ExcuseService.GetRandomExcuseAsync();
     }
 
