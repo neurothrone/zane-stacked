@@ -8,7 +8,12 @@
 
 <main class="container-fluid">
     <h2 class="mb-3 mt-2">Settings</h2>
-    <button class="btn btn-danger" @onclick="Logout">Delete the Universe</button>
+    <LoadingButton
+        ButtonClass="btn-danger"
+        Text="Delete the Universe"
+        IsLoading="@_isLoading"
+        Disabled="@IsButtonDisabled"
+        OnClick="Logout"/>
 </main>
 
 @code {
@@ -16,12 +21,20 @@
     [Inject]
     private IAccountManagement AccountManagement { get; set; } = null!;
 
+    private bool _isLoading;
+
+    private bool IsButtonDisabled => _isLoading;
+
     private async Task Logout()
     {
-        if (await AccountManagement.CheckAuthenticatedAsync())
-        {
-            await AccountManagement.LogoutAsync();
-        }
+        _isLoading = true;
+        await Task.Delay(TimeSpan.FromSeconds(2));
+        _isLoading = false;
+
+        // if (await AccountManagement.CheckAuthenticatedAsync())
+        // {
+        //     await AccountManagement.LogoutAsync();
+        // }
     }
 
 }
