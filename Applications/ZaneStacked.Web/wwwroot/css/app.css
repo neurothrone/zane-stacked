@@ -5,6 +5,7 @@
     --neon-pink: #ff00ff;
     --light-text: #222;
     --dark-text: #eee;
+    --secondary-purple: #B68BFF;
 }
 
 body {
@@ -217,10 +218,4 @@ textarea:focus {
     border-color: #6a0dad !important;
     box-shadow: 0 0 5px rgba(106, 13, 173, 0.75) !important;
     outline: none !important;
-}
-
-.list-group-item.active {
-    background-color: #6a0dad !important;
-    border-color: var(--bs-list-group-border-color) !important;
-    color: white !important;
 }
