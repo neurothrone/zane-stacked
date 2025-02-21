@@ -27,6 +27,19 @@ window.enableNavRailTooltips = () => {
     });
 };
 
+window.showBootstrapToast = (title, message, colorClass) => {
+    let toastEl = document.getElementById("blazorToast");
+    if (toastEl) {
+        document.getElementById("toastTitle").textContent = title;
+        document.getElementById("toastMessage").textContent = message;
+
+        let icon = document.getElementById("toastIcon");
+        icon.className = `bi bi-exclamation-circle-fill ${colorClass}`;
+
+        let toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+};
 
 document.addEventListener("DOMContentLoaded", function () {
     let savedTheme = localStorage.getItem("theme") || "dark";

@@ -47,5 +47,6 @@ builder.Services.AddScoped<SkillService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<ExcuseService>();
+builder.Services.AddScoped<ToastService>();
 
 await builder.Build().RunAsync();
