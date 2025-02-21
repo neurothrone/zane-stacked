@@ -13,7 +13,9 @@
     <h2 class="mb-3 mt-2">Skills</h2>
 
     <!-- Add Skill Button -->
-    <button class="btn btn-custom mb-3" @onclick="ToggleEditForm">
+    <button class="btn btn-custom mb-3"
+            disabled="@_isLoading"
+            @onclick="ToggleEditForm">
         @(_showForm ? "Cancel" : "Add Skill")
     </button>
 
@@ -42,8 +44,12 @@
                     <ValidationMessage For="() => _currentSkill.Proficiency" class="text-danger"/>
                 </div>
 
-                <button type="submit"
-                        class="btn btn-custom w-100">@(_isEditing && _selectedSkill is not null ? "Update" : "Add")</button>
+                <LoadingButton
+                    ButtonClass="btn-custom w-100"
+                    Type="submit"
+                    Text="@(_isEditing && _selectedSkill is not null ? "Update" : "Add")"
+                    IsLoading="@(_isLoading && !_isDeleting)"
+                    Disabled="@IsButtonDisabled"/>
             </EditForm>
         </div>
     }
@@ -85,10 +91,11 @@
 <!-- Action Panel -->
 @if (_selectedSkill is not null)
 {
-    <div class="action-panel text-bg-dark border-top">
-        <button class="btn btn-custom" @onclick="EditSkill">Edit</button>
-        <button class="btn btn-danger" @onclick="DeleteSkill">Delete</button>
-    </div>
+    <ActionPanel 
+        IsLoading="_isLoading" 
+        IsDeleting="_isDeleting"
+        OnEdit="EditSkill" 
+        OnDelete="DeleteSkill"/>
 }
 
 
@@ -106,28 +113,19 @@
     private bool _isEditing;
     private bool _showForm;
 
+    private bool _isLoading;
+    private bool _isDeleting;
+
+    private bool IsButtonDisabled => _isLoading || _isDeleting;
+
     protected override async Task OnInitializedAsync()
     {
-        // await Task.Delay(TimeSpan.FromSeconds(2));
+        _isLoading = true;
+        
         _allSkills = await SkillService.GetSkillsAsync();
+        
+        _isLoading = false;
     }
-
-    // private async ValueTask<ItemsProviderResult<SkillDto>> LoadSkills(ItemsProviderRequest request)
-    // {
-    //     if (_allSkills.Count == 0)
-    //     {
-    //         _allSkills = await SkillService.GetSkillsAsync();
-    //     }
-    //
-    //     // Apply filtering when search term is not empty
-    //     var filteredSkills = string.IsNullOrWhiteSpace(_searchTerm)
-    //         ? _allSkills
-    //         : _allSkills.Where(s => s.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
-    //
-    //     // Get only the requested slice for Virtualization
-    //     var items = filteredSkills.Skip(request.StartIndex).Take(request.Count).ToList();
-    //     return new ItemsProviderResult<SkillDto>(items, filteredSkills.Count);
-    // }
 
     private void ToggleEditForm()
     {
@@ -141,6 +139,8 @@
 
     private async Task SaveSkill()
     {
+        _isLoading = true;
+        
         if (_currentSkill.Id == 0)
         {
             var createdSkill = await SkillService.AddSkillAsync(
@@ -151,15 +151,8 @@
                     Proficiency = _currentSkill.Proficiency
                 }
             );
-            // var createdSkill = await SkillService.AddSkillAsync(new InputSkillDto(
-            //     _currentSkill.Name,
-            //     _currentSkill.YearsOfExperience,
-            //     _currentSkill.Proficiency
-            // ));
             if (createdSkill is not null)
-            {
                 _allSkills?.Insert(0, createdSkill);
-            }
         }
         else
         {
@@ -172,12 +165,6 @@
                     Proficiency = _currentSkill.Proficiency
                 }
             );
-            // var updatedSkill = await SkillService.UpdateSkillAsync(new InputSkillDto(
-            //     _currentSkill.Id,
-            //     _currentSkill.Name,
-            //     _currentSkill.YearsOfExperience,
-            //     _currentSkill.Proficiency
-            // ));
             if (updatedSkill is not null)
             {
                 var index = _allSkills?.FindIndex(s => s.Id == updatedSkill.Id);
@@ -193,17 +180,14 @@
         }
 
         _currentSkill = new InputSkill();
+        _isLoading = false;
     }
 
     private void SelectSkill(SkillDto skill)
     {
         _selectedSkill = _selectedSkill?.Id == skill.Id ? null : skill;
-
-        if (_selectedSkill is not null)
-            return;
-
-        _currentSkill.Id = 0;
-        _isEditing = false;
+        if (_selectedSkill is null)
+            ResetCurrentSkill();
     }
 
     private void EditSkill()
@@ -227,6 +211,9 @@
     {
         if (_selectedSkill is null)
             return;
+        
+        _isLoading = true;
+        _isDeleting = true;
 
         var deleted = await SkillService.DeleteSkillAsync(_selectedSkill.Id);
         if (deleted)
@@ -235,6 +222,16 @@
         }
 
         _selectedSkill = null;
+        _isLoading = false;
+        _isDeleting = false;
+        
+        ResetCurrentSkill();
+    }
+
+    private void ResetCurrentSkill()
+    {
+        _currentSkill.Id = 0;
+        _isEditing = false;
     }
 
     private class InputSkill

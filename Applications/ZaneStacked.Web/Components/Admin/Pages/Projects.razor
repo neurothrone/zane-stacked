@@ -12,7 +12,9 @@
     <h2 class="mb-3 mt-2">Projects</h2>
 
     <!-- Add Project Button -->
-    <button class="btn btn-custom mb-3" @onclick="ToggleEditForm">
+    <button class="btn btn-custom mb-3"
+            disabled="@_isLoading"
+            @onclick="ToggleEditForm">
         @(_showForm ? "Cancel" : "Add Project")
     </button>
 
@@ -57,10 +59,15 @@
                              SelectedSkillIds="@_selectedSkills"
                              SelectedSkillIdsChanged="@(skillIds => _selectedSkills = skillIds)"
                              Skills="@_skills"
-                             IsLoading="@_isLoadingSkills"/>
+                             IsLoading="@_isLoadingSkills"
+                             IsDisabled="_isLoading"/>
 
-                <button type="submit"
-                        class="btn btn-custom w-100">@(_isEditing && _selectedProject is not null ? "Update" : "Add")</button>
+                <LoadingButton
+                    ButtonClass="btn-custom w-100"
+                    Type="submit"
+                    Text="@(_isEditing && _selectedProject is not null ? "Update" : "Add")"
+                    IsLoading="@(_isLoading && !_isDeleting)"
+                    Disabled="@IsButtonDisabled"/>
             </EditForm>
         </div>
     }
@@ -102,10 +109,11 @@
 <!-- Action Panel -->
 @if (_selectedProject is not null)
 {
-    <div class="action-panel text-bg-dark border-top">
-        <button class="btn btn-custom" @onclick="EditProject">Edit</button>
-        <button class="btn btn-danger" @onclick="DeleteProject">Delete</button>
-    </div>
+    <ActionPanel
+        IsLoading="_isLoading"
+        IsDeleting="_isDeleting"
+        OnEdit="EditProject"
+        OnDelete="DeleteProject"/>
 }
 
 @code {
@@ -122,17 +130,27 @@
 
     private List<SkillDto> _skills = [];
     private List<int> _selectedSkills = [];
-    private bool _isLoadingSkills = true;
 
     // private string _searchTerm = "";
+
     private bool _isEditing;
     private bool _showForm;
 
+    private bool _isLoading;
+    private bool _isLoadingSkills;
+    private bool _isDeleting;
+
+    private bool IsButtonDisabled => _isLoading || _isDeleting;
+
     protected override async Task OnInitializedAsync()
     {
-        // await Task.Delay(TimeSpan.FromSeconds(2));
+        _isLoading = true;
+        _isLoadingSkills = true;
+        
         _allProjects = await ProjectService.GetProjectsAsync();
         _skills = await SkillService.GetSkillsAsync();
+
+        _isLoading = false;
         _isLoadingSkills = false;
     }
 
@@ -148,6 +166,8 @@
 
     private async Task SaveProject()
     {
+        _isLoading = true;
+        
         if (_currentProject.Id == 0)
         {
             var createdProject = await ProjectService.AddProjectAsync(
@@ -161,11 +181,8 @@
                     SkillIds = _selectedSkills
                 }
             );
-
             if (createdProject is not null)
-            {
                 _allProjects?.Insert(0, createdProject);
-            }
         }
         else
         {
@@ -198,16 +215,14 @@
         }
 
         _currentProject = new InputProject();
+        _isLoading = false;
     }
 
     private void SelectProject(ProjectDto project)
     {
         _selectedProject = _selectedProject?.Id == project.Id ? null : project;
-        if (_selectedProject is not null)
-            return;
-
-        _currentProject.Id = 0;
-        _isEditing = false;
+        if (_selectedProject is null)
+            ResetCurrentProject();
     }
 
     private void EditProject()
@@ -237,6 +252,9 @@
         if (_selectedProject is null)
             return;
 
+        _isLoading = true;
+        _isDeleting = true;
+        
         var deleted = await ProjectService.DeleteProjectAsync(_selectedProject.Id);
         if (deleted)
         {
@@ -244,6 +262,16 @@
         }
 
         _selectedProject = null;
+        _isLoading = false;
+        _isDeleting = false;
+
+        ResetCurrentProject();
+    }
+
+    private void ResetCurrentProject()
+    {
+        _currentProject.Id = 0;
+        _isEditing = false;
     }
 
     private class InputProject
