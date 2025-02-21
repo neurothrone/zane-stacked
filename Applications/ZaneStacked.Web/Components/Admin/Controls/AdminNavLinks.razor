@@ -2,7 +2,9 @@
     @foreach (var item in _navigationItems)
     {
         <li class="@ItemClass">
-            <NavLink href="@item.Href" Match="item.Match" class="nav-link text-white" ActiveClass="active">
+            <NavLink href="@item.Href" Match="item.Match"
+                     class="nav-link text-white" ActiveClass="active"
+                     title="@item.Name" data-bs-toggle="tooltip" data-bs-placement="right">
                 <i class="bi @item.Icon me-2"></i>
                 @if (!IsCompact)
                 {
@@ -24,6 +26,12 @@
     [Parameter]
     public bool IsCompact { get; set; }
 
+    [Parameter]
+    public bool EnableTooltips { get; set; }
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = null!;
+
     private readonly List<NavigationItem> _navigationItems =
     [
         new("Dashboard", "/admin", "bi-speedometer2", NavLinkMatch.All),
@@ -32,6 +40,19 @@
         new("Settings", "/admin/settings", "bi-gear")
     ];
 
-    private record NavigationItem(string Name, string Href, string Icon, NavLinkMatch Match = NavLinkMatch.Prefix);
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && EnableTooltips)
+        {
+            await JsRuntime.InvokeVoidAsync("enableNavRailTooltips");
+        }
+    }
+
+    private record NavigationItem(
+        string Name,
+        string Href,
+        string Icon,
+        NavLinkMatch Match = NavLinkMatch.Prefix
+    );
 
 }
