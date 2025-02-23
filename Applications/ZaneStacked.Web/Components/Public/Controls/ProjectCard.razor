@@ -1,12 +1,15 @@
 @using ZaneStacked.Shared.DTOs
 
 <div class="card project-card h-100">
-    @* <img src="@Project.FeaturedImage" class="card-img-top" alt="@Project.Name"> *@
-    <ImageWithFallback Source="@Project.FeaturedImage" CssClass="card-img-top" AltText="@Project.Name"/>
-    
+    <ImageWithFallback
+        CssClass="card-img-top"
+        Source="@Project.FeaturedImage"
+        AltText="@Project.Name"
+    />
+
     <div class="card-body d-flex flex-column">
         <h4 class="card-title">@Project.Name</h4>
-        
+
         <p class="card-text flex-grow-1">@Project.Description</p>
         <div>
             @foreach (var skill in Project.Skills)
@@ -14,7 +17,7 @@
                 <SkillBadge Name="@skill.Name" CssClass="me-2"/>
             }
         </div>
-        
+
         <div class="mt-3">
             <PrimaryButton Href="@Project.GitHubUrl" Icon="bi-github" Text="GitHub"/>
             @if (!string.IsNullOrEmpty(Project.DemoUrl))
