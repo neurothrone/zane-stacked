@@ -1,0 +1,21 @@
+<img src="@Source" @onerror="HandleError" alt="@AltText"/>
+
+@code {
+    
+    [Parameter]
+    public string Source { get; set; } = string.Empty;
+
+    [Parameter]
+    public string AltText { get; set; } = "Image";
+    
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    private string FallbackSource => "/images/cookie-monster-house.jpg";
+
+    private void HandleError(EventArgs e)
+    {
+        Source = FallbackSource;
+    }
+
+}
