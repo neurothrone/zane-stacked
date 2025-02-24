@@ -48,5 +48,10 @@ builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<ExcuseService>();
 builder.Services.AddScoped<ToastService>();
+builder.Services.AddSingleton<StorageService>(_ =>
+    new StorageService(builder.Configuration["StorageUrl"] ??
+                       throw new Exception("StorageUrl must be set in appsettings.json")
+    )
+);
 
 await builder.Build().RunAsync();
