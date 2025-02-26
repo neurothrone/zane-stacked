@@ -31,7 +31,7 @@
 @code {
 
     [Inject]
-    private NavigationManager Navigation { get; set; }
+    private NavigationManager Navigation { get; set; } = null!;
 
     private bool _showScanResult = false;
     private int _progressWidth = 0;
