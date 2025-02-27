@@ -6,7 +6,11 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            @if (routeData.PageType.Namespace?.Contains("Admin") == true)
+            @if (routeData.PageType.Namespace?.Contains("Public") == true)
+            {
+                <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
+            }
+            else
             {
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(AdminLayout)">
                     <NotAuthorized>
@@ -14,10 +18,6 @@
                     </NotAuthorized>
                 </AuthorizeRouteView>
                 <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
-            }
-            else
-            {
-                <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)"/>
             }
         </Found>
         <NotFound>
