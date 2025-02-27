@@ -68,11 +68,14 @@ builder.Services.AddCors(
         policy => policy
             .WithOrigins(
                 builder.Configuration["ApiUrl"] ?? throw new Exception("ApiUrl must be set in appsettings.json"),
-                builder.Configuration["ClientUrl"] ?? throw new Exception("ClientUrl must be set in appsettings.json")
+                builder.Configuration["ClientUrl"] ?? throw new Exception("ClientUrl must be set in appsettings.json"),
+                builder.Configuration["DomainUrl"] ?? throw new Exception("DomainUrl must be set in appsettings.json")
             )
             .AllowAnyMethod()
             .AllowAnyHeader()
-            .AllowCredentials()));
+            .AllowCredentials()
+    )
+);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
