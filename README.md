@@ -6,6 +6,8 @@ Welcome to **ZaneStacked**, the full-stack developer CV profile that's so futuri
 if it built me. Built with Blazor WebAssembly and .NET Minimal API, this project showcases my skills, projects, and an
 unhealthy obsession with dark humor.
 
+> **ZaneStacked** is live → [https://neurothrone.tech](https://neurothrone.tech)
+
 ## Tech Stack
 
 - **Blazor WebAssembly Frontend**: Because writing JavaScript is *so* 2023.
