@@ -12,8 +12,8 @@ public static class ProjectExtensions
             project.Name,
             project.Description,
             project.GitHubUrl,
-            project.DemoUrl,
             project.FeaturedImage,
+            project.DemoUrl,
             project.Skills.Select(skill => skill.ToDto()).ToList(),
             project.CreatedDate
         );
@@ -27,8 +27,8 @@ public static class ProjectExtensions
             Name = dto.Name,
             Description = dto.Description,
             GitHubUrl = dto.GitHubUrl,
-            DemoUrl = dto.DemoUrl,
             FeaturedImage = dto.FeaturedImage,
+            DemoUrl = dto.DemoUrl,
             CreatedDate = dto.CreatedDate ?? DateTime.UtcNow
         };
     }
