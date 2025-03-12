@@ -34,7 +34,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _skills = await SkillService.GetSkillsAsync();
+        _skills = (await SkillService.GetSkillsAsync())
+            .OrderByDescending(s => s.YearsOfExperience)
+            .ToList();
     }
 
 }
