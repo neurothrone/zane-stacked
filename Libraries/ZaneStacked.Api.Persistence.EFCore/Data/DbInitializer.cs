@@ -171,6 +171,7 @@ public static class DbInitializer
                     "An exhibitor-focused event app available on AppStore and PlayStore. Scan badges, collect leads, and pretend you're not just here for the free snacks. Built in Flutter, then ported to .NET MAUI after realizing I hadn't suffered enough the first time.",
                 GitHubUrl = "https://github.com/neurothrone/agi-events",
                 FeaturedImage = "agi-events.png",
+                DemoUrl = "https://www.youtube.com/watch?v=i_1-V75mpbo",
                 Skills = skills.Where(s => s.Name is "Flutter" or "MAUI" or "Firebase").ToList()
             },
             new()
@@ -241,7 +242,7 @@ public static class DbInitializer
                 Description =
                     "A no-nonsense task manager available on iOS, iPadOS, Apple Watch (standalone), and macOS. Customizable, intuitive, and designed to keep you on track without the usual productivity app fluff. Because staying organized shouldn't feel like a full-time job.",
                 GitHubUrl = "https://github.com/neurothrone/work-work",
-                FeaturedImage = "work-work.png",
+                FeaturedImage = "work-work.jpeg",
                 Skills = skills.Where(s => s.Name is "SwiftUI").ToList()
             }
         ];
