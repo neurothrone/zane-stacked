@@ -150,7 +150,6 @@ public static class DbInitializer
                     "A food truck frontend built with React and TypeScript that consumes an API running on AWS. Digital street food, served hot.",
                 GitHubUrl = "https://github.com/neurothrone/byte-me-truck",
                 FeaturedImage = "byte-me-truck.png",
-                DemoUrl = "https://byte-me-truck.netlify.app",
                 Skills = skills.Where(s => s.Name is "React" or "TypeScript" or "AWS" or "Docker").ToList()
             },
             new()
