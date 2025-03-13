@@ -142,7 +142,6 @@ public static class DbInitializer
                     "An API that generates ridiculous yet oddly convincing excuses. It even has a React frontend, because excuses deserve a UI.",
                 GitHubUrl = "https://github.com/neurothrone/project-excuses",
                 FeaturedImage = "excuses-api-docs.png",
-                DemoUrl = "https://excuses-react.netlify.app",
                 Skills = skills.Where(s => s.Name is "Azure" or "Blazor" or "C#" or ".NET" or "React").ToList()
             },
             new()
@@ -152,6 +151,7 @@ public static class DbInitializer
                     "A food truck frontend built with React and TypeScript that consumes an API running on AWS. Digital street food, served hot.",
                 GitHubUrl = "https://github.com/neurothrone/byte-me-truck",
                 FeaturedImage = "byte-me-truck.png",
+                DemoUrl = "https://byte-me-truck.netlify.app/",
                 Skills = skills.Where(s => s.Name is "React" or "TypeScript" or "AWS" or "Docker").ToList()
             },
             new()
