@@ -158,7 +158,7 @@ public static class DbInitializer
             {
                 Name = "Project Victory",
                 Description =
-                    "A full-stack chat app with WebSockets featuring a React frontend and an Express backend, deployed on Azure. Because real-time conversations shouldn’t feel like waiting for dial-up.",
+                    "A full-stack chat app with WebSockets featuring a React frontend and an Express backend, deployed on Azure. Because real-time conversations shouldn't feel like waiting for dial-up.",
                 GitHubUrl = "https://github.com/neurothrone/project-victory-react",
                 FeaturedImage = "project-victory-react.jpg",
                 DemoUrl = "https://www.youtube.com/watch?v=YsOR4z0WT4A",
