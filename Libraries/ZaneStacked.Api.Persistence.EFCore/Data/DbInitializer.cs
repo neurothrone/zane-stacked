@@ -99,6 +99,8 @@ public static class DbInitializer
         List<Skill> skills =
         [
             new() { Name = "C#", YearsOfExperience = 5, Proficiency = "Expert" },
+            new() { Name = "HTML", YearsOfExperience = 5, Proficiency = "Advanced" },
+            new() { Name = "CSS", YearsOfExperience = 5, Proficiency = "Advanced" },
             new() { Name = ".NET", YearsOfExperience = 3, Proficiency = "Advanced" },
             new() { Name = ".NET MAUI", YearsOfExperience = 2, Proficiency = "Advanced" },
             new() { Name = "Flutter", YearsOfExperience = 3, Proficiency = "Advanced" },
@@ -162,6 +164,17 @@ public static class DbInitializer
                 DemoUrl = "https://www.youtube.com/watch?v=YsOR4z0WT4A",
                 Skills = skills.Where(s =>
                     s.Name is "React" or "Express" or "JavaScript" or "WebSockets" or "Docker" or "Azure").ToList()
+            },
+            new()
+            {
+                Name = "The Chuckling Abyss",
+                Description =
+                    "A delightfully bleak fictional company offering existential services with a side of dark humor. Originally built with classic web tech (HTML, CSS, JS), then reincarnated in React and TypeScript—because even absurdity deserves a modern frontend.",
+                GitHubUrl = "https://github.com/neurothrone/chuckling-abyss",
+                FeaturedImage = "the-chuckling-abyss.png",
+                DemoUrl = "https://neurothrone.github.io/chuckling-abyss/",
+                Skills = skills.Where(s =>
+                    s.Name is "React" or "TypeScript" or "JavaScript" or "CSS" or "HTML").ToList()
             },
             new()
             {
