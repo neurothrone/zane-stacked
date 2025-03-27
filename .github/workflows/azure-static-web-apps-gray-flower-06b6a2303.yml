@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "Applications/ZaneStacked.Web/**" # Only trigger when files inside this folder change
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
